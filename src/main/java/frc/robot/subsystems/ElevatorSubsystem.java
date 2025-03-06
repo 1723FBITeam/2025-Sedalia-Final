@@ -29,7 +29,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void stopMotor(){
-        elevatorMotor1.setControl(new DutyCycleOut(.03));
-        elevatorMotor2.setControl(new DutyCycleOut(.03));
+        elevatorMotor1.setControl(new DutyCycleOut(.02));
+        elevatorMotor2.setControl(new DutyCycleOut(.02));
     }
 }

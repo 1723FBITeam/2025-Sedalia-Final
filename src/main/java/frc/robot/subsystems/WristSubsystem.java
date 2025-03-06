@@ -17,14 +17,14 @@ public class WristSubsystem extends SubsystemBase {
     private static final double TARGET_TICKS = TARGET_ANGLE_DEGREES / DEGREES_PER_TICK; // Convert angle to ticks
 
     // PID Constants
-    private static final double kP_ROTATED = 5; // Proportional gain
+
     private static final double kP_BASE = 1; // Proportional gain
-    private static final double kI = 5.0; // Integral gain
-    private static final double kD = 0.5; // Derivative gain
+    private static final double kI = 0.0; // Integral gain
+    private static final double kD = 0.0; // Derivative gain
 
     private PIDController pid;
     private double targetPosition;
-    private boolean needToRotate = false;
+    private boolean needToRotate = true;
 
     public WristSubsystem() {
         // Initialize PID controller with constants
@@ -35,11 +35,6 @@ public class WristSubsystem extends SubsystemBase {
 
     public void toggleRotation() {
         needToRotate = !needToRotate;
-        if (needToRotate){
-            pid.setP(kP_ROTATED);
-        } else{
-            pid.setP(kP_BASE);
-        }
 
         targetPosition = needToRotate ? TARGET_TICKS : 0; // Toggle between target position and zero
     }

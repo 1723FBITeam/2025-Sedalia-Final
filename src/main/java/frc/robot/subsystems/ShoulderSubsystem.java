@@ -9,6 +9,7 @@ import frc.robot.Constants;
 public class ShoulderSubsystem extends SubsystemBase {
     private final SparkMax shoulderMotor = new SparkMax(Constants.ArmPorts.ShoulderMotor, MotorType.kBrushless);
     private static final double MOTOR_POWER = -.15;
+    private static final double MOTOR_POWER_HOLD = -.02;
     private boolean moving = false;
 
     public ShoulderSubsystem() {
@@ -33,15 +34,13 @@ public class ShoulderSubsystem extends SubsystemBase {
     public void periodic() {
         
         if (!moving){
-            if (shoulderMotor.getEncoder().getPosition() > 9.0) {
-                shoulderMotor.set(MOTOR_POWER / 3);
-            } else if (shoulderMotor.getEncoder().getPosition() > 2.0) {
-                shoulderMotor.set(MOTOR_POWER / 4);
+            if (shoulderMotor.getEncoder().getPosition() > 3.0) {
+                shoulderMotor.set(MOTOR_POWER_HOLD);
             } else {
                 shoulderMotor.set(0);
             }
         }
-        // System.out.println("shoulder: " + shoulderMotor.getEncoder().getPosition());
+        System.out.println("shoulder: " + shoulderMotor.getEncoder().getPosition());
     }
 
 }
