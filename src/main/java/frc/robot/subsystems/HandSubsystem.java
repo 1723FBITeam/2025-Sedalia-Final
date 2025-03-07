@@ -17,15 +17,7 @@ public class HandSubsystem extends SubsystemBase {
 
     }
 
-    public void intakeAlgae() {
-        algaeMotor.set(MOTOR_POWER);
-        coralMoter.set(-MOTOR_POWER);
-    }
-    public void outputAlgae() {
-        algaeMotor.set(-MOTOR_POWER);
-        coralMoter.set(MOTOR_POWER);
-
-    }
+    
     public void intakeCoral() {
         coralMoter.set(MOTOR_POWER);
     }

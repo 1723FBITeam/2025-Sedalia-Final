@@ -178,7 +178,7 @@ private void startButtonUpdater() {
         // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        m_driverController.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        m_driverController.back().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
@@ -193,32 +193,23 @@ private void startButtonUpdater() {
         handSubsystem::stopMotor,
         handSubsystem));
 
-    m_driverController.x().whileTrue(new StartEndCommand(
-        handSubsystem::intakeAlgae,
-        handSubsystem::stopMotor,
-        handSubsystem));
 
-    m_driverController.y().whileTrue(new StartEndCommand(
-        handSubsystem::outputAlgae,
-        handSubsystem::stopMotor,
-        handSubsystem));
-
-    m_commanderController.start().whileTrue(new StartEndCommand(
+    m_commanderController.leftBumper().whileTrue(new StartEndCommand(
         shoulderSubsystem::shoulderUp,
         shoulderSubsystem::stopMotor,
         shoulderSubsystem));
 
-    m_commanderController.back().whileTrue(new StartEndCommand(
+    m_commanderController.leftTrigger().whileTrue(new StartEndCommand(
         shoulderSubsystem::shoulderDown,
         shoulderSubsystem::stopMotor,
         shoulderSubsystem));
 
-    m_commanderController.y().whileTrue(new StartEndCommand(
+    m_commanderController.rightBumper().whileTrue(new StartEndCommand(
         elevatorSubsystem::elevatorUp,
         elevatorSubsystem::stopMotor,
         elevatorSubsystem));
 
-    m_commanderController.a().whileTrue(new StartEndCommand(
+    m_commanderController.rightTrigger().whileTrue(new StartEndCommand(
         elevatorSubsystem::elevatorDown,
         elevatorSubsystem::stopMotor,
         elevatorSubsystem));
