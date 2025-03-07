@@ -76,7 +76,7 @@ public class RobotContainer {
   
     private final SlewRateLimiter xLimiter = new SlewRateLimiter(3.0);
     private final SlewRateLimiter yLimiter = new SlewRateLimiter(3.0);
-    private final SlewRateLimiter rotationLimiter = new SlewRateLimiter(3.0);
+    private final SlewRateLimiter rotationLimiter = new SlewRateLimiter(6.0);
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
 
@@ -151,7 +151,7 @@ private void startButtonUpdater() {
                                                                                                // (forward)
                             .withVelocityY(yLimiter.calculate(-joystick.getLeftX()*0.9 * MaxSpeed)) // Drive left with
                                                                             // negative X (left)
-                            .withRotationalRate(rotationLimiter.calculate(-joystick.getRightX() * MaxAngularRate)) // Drive
+                            .withRotationalRate(rotationLimiter.calculate(-joystick.getRightX() * 1.25* MaxAngularRate)) // Drive
                                                                                         // counterclockwise
                                                                                         // with
                                                                                         // negative
@@ -192,6 +192,11 @@ private void startButtonUpdater() {
         handSubsystem::intakeCoral,
         handSubsystem::stopMotor,
         handSubsystem));
+
+        m_driverController.x().whileTrue(new StartEndCommand(
+            handSubsystem::outputCoral,
+            handSubsystem::stopMotor,
+            handSubsystem));
 
 
     m_driverController.leftBumper().whileTrue(new StartEndCommand(
