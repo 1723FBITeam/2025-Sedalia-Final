@@ -34,9 +34,9 @@ public class ShoulderSubsystem extends SubsystemBase {
         
         if (!moving){
             if (shoulderMotor.getEncoder().getPosition() > 9.0) {
-                shoulderMotor.set(MOTOR_POWER / 3);
+                shoulderMotor.set(MOTOR_POWER / 5);
             } else if (shoulderMotor.getEncoder().getPosition() > 2.0) {
-                shoulderMotor.set(MOTOR_POWER / 4);
+                shoulderMotor.set(MOTOR_POWER / 6);
             } else {
                 shoulderMotor.set(0);
             }
