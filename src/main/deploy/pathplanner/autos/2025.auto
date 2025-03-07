@@ -9,18 +9,6 @@
           "data": {
             "pathName": "ToReef"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Test"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "WideToReefBlue"
-          }
         }
       ]
     }
