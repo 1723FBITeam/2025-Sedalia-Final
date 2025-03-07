@@ -19,13 +19,13 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void elevatorUp(){
         
-        elevatorMotor1.setControl(new DutyCycleOut(.2));
-        elevatorMotor2.setControl(new DutyCycleOut(.2));
+        elevatorMotor1.setControl(new DutyCycleOut(.3));
+        elevatorMotor2.setControl(new DutyCycleOut(.3));
     }
 
     public void elevatorDown(){
-        elevatorMotor1.setControl(new DutyCycleOut(-.05));
-        elevatorMotor2.setControl(new DutyCycleOut(-.05));
+        elevatorMotor1.setControl(new DutyCycleOut(-.15));
+        elevatorMotor2.setControl(new DutyCycleOut(-.15));
     }
 
     public void stopMotor(){
