@@ -148,15 +148,15 @@ public class RobotContainer {
                 // and Y is defined as to the left according to WPILib convention.
                 drivetrain.setDefaultCommand(
                                 // Drivetrain will execute this command periodically
-                                drivetrain.applyRequest(() -> drive.withVelocityX(xLimiter.calculate(-joystick.getLeftY()*joystick.getLeftY() * MaxSpeed)) // Drive
+                                drivetrain.applyRequest(() -> drive.withVelocityX(xLimiter.calculate(-joystick.getLeftY() * MaxSpeed)) // Drive
                                                                                                                    // forward
                                                                                                                    // with
                                                                                                                    // negative
                                                                                                                    // Y
                                                                                                                    // (forward)
-                                                .withVelocityY(yLimiter.calculate(-joystick.getLeftX()*joystick.getLeftX()*0.5 * MaxSpeed)) // Drive left with
+                                                .withVelocityY(yLimiter.calculate(-joystick.getLeftX()*0.5 * MaxSpeed)) // Drive left with
                                                                                                 // negative X (left)
-                                                .withRotationalRate(rotationLimiter.calculate(-joystick.getRightX()*joystick.getRightX()*0.5 * MaxAngularRate)) // Drive
+                                                .withRotationalRate(rotationLimiter.calculate(-joystick.getRightX()*0.5 * MaxAngularRate)) // Drive
                                                                                                             // counterclockwise
                                                                                                             // with
                                                                                                             // negative
