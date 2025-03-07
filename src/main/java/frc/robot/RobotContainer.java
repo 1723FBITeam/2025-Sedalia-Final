@@ -194,22 +194,22 @@ private void startButtonUpdater() {
         handSubsystem));
 
 
-    m_commanderController.leftBumper().whileTrue(new StartEndCommand(
+    m_driverController.leftBumper().whileTrue(new StartEndCommand(
         shoulderSubsystem::shoulderUp,
         shoulderSubsystem::stopMotor,
         shoulderSubsystem));
 
-    m_commanderController.leftTrigger().whileTrue(new StartEndCommand(
+    m_driverController.leftTrigger().whileTrue(new StartEndCommand(
         shoulderSubsystem::shoulderDown,
         shoulderSubsystem::stopMotor,
         shoulderSubsystem));
 
-    m_commanderController.rightBumper().whileTrue(new StartEndCommand(
+    m_driverController.rightBumper().whileTrue(new StartEndCommand(
         elevatorSubsystem::elevatorUp,
         elevatorSubsystem::stopMotor,
         elevatorSubsystem));
 
-    m_commanderController.rightTrigger().whileTrue(new StartEndCommand(
+    m_driverController.rightTrigger().whileTrue(new StartEndCommand(
         elevatorSubsystem::elevatorDown,
         elevatorSubsystem::stopMotor,
         elevatorSubsystem));
