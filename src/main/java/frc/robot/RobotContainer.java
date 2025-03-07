@@ -11,6 +11,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -73,8 +74,9 @@ public class RobotContainer {
     private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
     private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
   
-
-
+    private final SlewRateLimiter xLimiter = new SlewRateLimiter(3.0);
+    private final SlewRateLimiter yLimiter = new SlewRateLimiter(3.0);
+    private final SlewRateLimiter rotationLimiter = new SlewRateLimiter(3.0);
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
 
@@ -141,12 +143,20 @@ private void startButtonUpdater() {
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
-            drivetrain.applyRequest(() ->
-                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-            )
-        );
+            drivetrain.applyRequest(() -> drive.withVelocityX(xLimiter.calculate(-joystick.getLeftY() *0.7* MaxSpeed)) // Drive
+                                                                                               // forward
+                                                                                               // with
+                                                                                               // negative
+                                                                                               // Y
+                                                                                               // (forward)
+                            .withVelocityY(yLimiter.calculate(-joystick.getLeftX()*0.7 * MaxSpeed)) // Drive left with
+                                                                            // negative X (left)
+                            .withRotationalRate(rotationLimiter.calculate(-joystick.getRightX()*0.85 * MaxAngularRate)) // Drive
+                                                                                        // counterclockwise
+                                                                                        // with
+                                                                                        // negative
+                                                                                        // X (left)
+            ));
 
         // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         // joystick.b().whileTrue(drivetrain.applyRequest(() ->
