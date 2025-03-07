@@ -186,15 +186,15 @@ public class RobotContainer {
         // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        m_driverController.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        m_driverController.back().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
-        m_driverController.a().whileTrue(new StartEndCommand(
-                wristSubsystem::toggleRotation,
-                () -> {
-                },
-                wristSubsystem));
+        // m_driverController.a().whileTrue(new StartEndCommand(
+        //         wristSubsystem::toggleRotation,
+        //         () -> {
+        //         },
+        //         wristSubsystem));
 
         m_driverController.x().whileTrue(new StartEndCommand(
                 handSubsystem::intakeAlgae,
@@ -206,39 +206,32 @@ public class RobotContainer {
                 handSubsystem::stopMotor,
                 handSubsystem));
 
-        m_driverController.rightTrigger().whileTrue(new StartEndCommand(
+        m_driverController.a().whileTrue(new StartEndCommand(
                 handSubsystem::outputAlgaeDouble,
                 handSubsystem::stopMotor,
                 handSubsystem));
-        m_driverController.rightBumper().whileTrue(new StartEndCommand(
+        m_driverController.y().whileTrue(new StartEndCommand(
                 handSubsystem::outputAlgaeHalf,
                 handSubsystem::stopMotor,
                 handSubsystem));
 
-        m_driverController.start().whileTrue(new StartEndCommand(
+        
+            
+        m_driverController.leftBumper().whileTrue(new StartEndCommand(
                 shoulderSubsystem::shoulderUp,
                 shoulderSubsystem::stopMotor,
                 shoulderSubsystem));
 
-        m_driverController.back().whileTrue(new StartEndCommand(
+        m_driverController.leftTrigger().whileTrue(new StartEndCommand(
                 shoulderSubsystem::shoulderDown,
                 shoulderSubsystem::stopMotor,
                 shoulderSubsystem));
-        m_commanderController.start().whileTrue(new StartEndCommand(
-                shoulderSubsystem::shoulderUp,
-                shoulderSubsystem::stopMotor,
-                shoulderSubsystem));
-
-        m_commanderController.back().whileTrue(new StartEndCommand(
-                shoulderSubsystem::shoulderDown,
-                shoulderSubsystem::stopMotor,
-                shoulderSubsystem));
-        m_commanderController.y().whileTrue(new StartEndCommand(
+        m_driverController.rightBumper().whileTrue(new StartEndCommand(
                 elevatorSubsystem::elevatorUp,
                 elevatorSubsystem::stopMotor,
                 elevatorSubsystem));
 
-        m_commanderController.a().whileTrue(new StartEndCommand(
+        m_driverController.rightTrigger().whileTrue(new StartEndCommand(
                 elevatorSubsystem::elevatorDown,
                 elevatorSubsystem::stopMotor,
                 elevatorSubsystem));
