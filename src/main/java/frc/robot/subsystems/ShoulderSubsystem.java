@@ -40,7 +40,7 @@ public class ShoulderSubsystem extends SubsystemBase {
                 shoulderMotor.set(0);
             }
         }
-        System.out.println("shoulder: " + shoulderMotor.getEncoder().getPosition());
+        // System.out.println("shoulder: " + shoulderMotor.getEncoder().getPosition());
     }
 
 }

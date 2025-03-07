@@ -143,15 +143,15 @@ private void startButtonUpdater() {
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
-            drivetrain.applyRequest(() -> drive.withVelocityX(xLimiter.calculate(-joystick.getLeftY() *0.7* MaxSpeed)) // Drive
+            drivetrain.applyRequest(() -> drive.withVelocityX(xLimiter.calculate(-joystick.getLeftY() *0.9* MaxSpeed)) // Drive
                                                                                                // forward
                                                                                                // with
                                                                                                // negative
                                                                                                // Y
                                                                                                // (forward)
-                            .withVelocityY(yLimiter.calculate(-joystick.getLeftX()*0.7 * MaxSpeed)) // Drive left with
+                            .withVelocityY(yLimiter.calculate(-joystick.getLeftX()*0.9 * MaxSpeed)) // Drive left with
                                                                             // negative X (left)
-                            .withRotationalRate(rotationLimiter.calculate(-joystick.getRightX()*0.85 * MaxAngularRate)) // Drive
+                            .withRotationalRate(rotationLimiter.calculate(-joystick.getRightX() * MaxAngularRate)) // Drive
                                                                                         // counterclockwise
                                                                                         // with
                                                                                         // negative
