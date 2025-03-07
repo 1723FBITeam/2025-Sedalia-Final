@@ -8,7 +8,7 @@ import frc.robot.Constants;
 
 public class ShoulderSubsystem extends SubsystemBase {
     private final SparkMax shoulderMotor = new SparkMax(Constants.ArmPorts.ShoulderMotor, MotorType.kBrushless);
-    private static final double MOTOR_POWER = -.15;
+    private static final double MOTOR_POWER = -.2;
     private static final double MOTOR_POWER_HOLD = -.02;
     private boolean moving = false;
 
