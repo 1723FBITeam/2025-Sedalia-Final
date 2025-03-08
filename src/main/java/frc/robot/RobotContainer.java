@@ -219,6 +219,15 @@ private void startButtonUpdater() {
         elevatorSubsystem::stopMotor,
         elevatorSubsystem));
 
+        m_commanderController.x().whileTrue(new StartEndCommand(
+            ()->{
+                elevatorSubsystem.elevatorTop();
+                shoulderSubsystem.shoulderUp();
+            },
+            ()->{
+
+            },
+             elevatorSubsystem, shoulderSubsystem));
     // m_commanderController.start().whileTrue(new StartEndCommand(
     //     climberSubsystem::climberUp,
     //     climberSubsystem::stopMotor,
