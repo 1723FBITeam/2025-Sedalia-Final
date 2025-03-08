@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -42,6 +43,7 @@ public class ShoulderSubsystem extends SubsystemBase {
                 shoulderMotor.set(0);
             }
         }
+        SmartDashboard.putNumber("Shoulder ", shoulderMotor.getEncoder().getPosition());
         // System.out.println("shoulder: " + shoulderMotor.getEncoder().getPosition());
     }
 

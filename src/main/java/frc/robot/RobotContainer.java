@@ -254,6 +254,47 @@ public class RobotContainer {
         // climberSubsystem::clawOpen,
         // climberSubsystem::stopClaw,
         // climberSubsystem));
+
+        m_commanderController.x().whileTrue(new StartEndCommand(
+                handSubsystem::intakeAlgae,
+                handSubsystem::stopMotor,
+                handSubsystem));
+
+        m_commanderController.b().whileTrue(new StartEndCommand(
+                handSubsystem::outputAlgaeFull,
+                handSubsystem::stopMotor,
+                handSubsystem));
+
+        m_commanderController.a().whileTrue(new StartEndCommand(
+                handSubsystem::outputAlgaeDouble,
+                handSubsystem::stopMotor,
+                handSubsystem));
+        m_commanderController.y().whileTrue(new StartEndCommand(
+                handSubsystem::outputAlgaeHalf,
+                handSubsystem::stopMotor,
+                handSubsystem));
+
+        
+                
+            
+        m_commanderController.leftBumper().whileTrue(new StartEndCommand(
+                shoulderSubsystem::shoulderUp,
+                shoulderSubsystem::stopMotor,
+                shoulderSubsystem));
+
+        m_commanderController.leftTrigger().whileTrue(new StartEndCommand(
+                shoulderSubsystem::shoulderDown,
+                shoulderSubsystem::stopMotor,
+                shoulderSubsystem));
+        m_commanderController.rightBumper().whileTrue(new StartEndCommand(
+                elevatorSubsystem::elevatorUp,
+                elevatorSubsystem::stopMotor,
+                elevatorSubsystem));
+
+        m_commanderController.rightTrigger().whileTrue(new StartEndCommand(
+                elevatorSubsystem::elevatorDown,
+                elevatorSubsystem::stopMotor,
+                elevatorSubsystem));
     }
 
     public Command getAutonomousCommand() {
