@@ -150,19 +150,9 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
                 drivetrain.applyRequest(() -> drive
-                        .withVelocityX(xLimiter.calculate(-joystick.getLeftY() * 0.7 * MaxSpeed)) // Drive
-                        // forward
-                        // with
-                        // negative
-                        // Y
-                        // (forward)
-                        .withVelocityY(yLimiter.calculate(-joystick.getLeftX() * 0.7 * MaxSpeed)) // Drive left with
-                        // negative X (left)
-                        .withRotationalRate(rotationLimiter.calculate(-joystick.getRightX() * 0.85 * MaxAngularRate)) // Drive
-                // counterclockwise
-                // with
-                // negative
-                // X (left)
+                        .withVelocityX(xLimiter.calculate(-joystick.getLeftY() * 0.7 * MaxSpeed)) 
+                        .withVelocityY(yLimiter.calculate(-joystick.getLeftX() * 0.7 * MaxSpeed)) 
+                        .withRotationalRate(rotationLimiter.calculate(-joystick.getRightX() * 0.85 * MaxAngularRate)) 
                 ));
 
         // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
@@ -227,12 +217,13 @@ public class RobotContainer {
                 shoulderSubsystem::stopMotor,
                 shoulderSubsystem));
         m_driverController.rightBumper().whileTrue(new StartEndCommand(
-                elevatorSubsystem::elevatorUp,
+                elevatorSubsystem::elevatorUpManual,
                 elevatorSubsystem::stopMotor,
                 elevatorSubsystem));
 
+
         m_driverController.rightTrigger().whileTrue(new StartEndCommand(
-                elevatorSubsystem::elevatorDown,
+                elevatorSubsystem::elevatorDownManual,
                 elevatorSubsystem::stopMotor,
                 elevatorSubsystem));
 
@@ -287,13 +278,15 @@ public class RobotContainer {
                 shoulderSubsystem::stopMotor,
                 shoulderSubsystem));
         m_commanderController.rightBumper().whileTrue(new StartEndCommand(
-                elevatorSubsystem::elevatorUp,
-                elevatorSubsystem::stopMotor,
+                elevatorSubsystem::elevatorUpAuto,
+                () -> {
+                },
                 elevatorSubsystem));
 
         m_commanderController.rightTrigger().whileTrue(new StartEndCommand(
-                elevatorSubsystem::elevatorDown,
-                elevatorSubsystem::stopMotor,
+                elevatorSubsystem::elevatorDownAuto,
+                () -> {
+                },
                 elevatorSubsystem));
     }
 
