@@ -269,13 +269,15 @@ public class RobotContainer {
                 
             
         m_commanderController.leftBumper().whileTrue(new StartEndCommand(
-                shoulderSubsystem::shoulderUp,
-                shoulderSubsystem::stopMotor,
+                shoulderSubsystem::shoulderUpAuto,
+                () -> {
+                },
                 shoulderSubsystem));
 
         m_commanderController.leftTrigger().whileTrue(new StartEndCommand(
-                shoulderSubsystem::shoulderDown,
-                shoulderSubsystem::stopMotor,
+                shoulderSubsystem::shoulderDownAuto,
+                () -> {
+                },
                 shoulderSubsystem));
         m_commanderController.rightBumper().whileTrue(new StartEndCommand(
                 elevatorSubsystem::elevatorUpAuto,
