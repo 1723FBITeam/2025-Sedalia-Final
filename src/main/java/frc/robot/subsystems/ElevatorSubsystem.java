@@ -30,8 +30,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     private Map<Integer, Double> targetPositions = Map.of(
             0, 2.0,
             1, 10.0,
-            2, 20.0
-            );
+            2, 20.0);
     private int currentPositionKey = 0;
 
     public ElevatorSubsystem() {
@@ -48,17 +47,34 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorMotor2.setControl(new DutyCycleOut(.3));
     }
 
+    public void elevatorTop() {
+        autoMode = true;
+        pid.setP(kP_UP);
+        currentPositionKey = targetPositions.keySet().stream().max(Integer::compareTo).orElse(currentPositionKey);
+    }
+
+    public void elevatorBottom() {
+        autoMode = true;
+        pid.setP(kP_DOWN);
+        currentPositionKey = targetPositions.keySet().stream().min(Integer::compareTo).orElse(currentPositionKey);
+    }
+
     public void elevatorUpAuto() {
         autoMode = true;
         pid.setP(kP_UP);
-        currentPositionKey = (currentPositionKey < 2) ? currentPositionKey + 1 : 2;
+        currentPositionKey = targetPositions.keySet().stream()
+                .filter(k -> k > currentPositionKey)
+                .min(Integer::compareTo)
+                .orElse(currentPositionKey);
     }
 
     public void elevatorDownAuto() {
         autoMode = true;
         pid.setP(kP_DOWN);
-        currentPositionKey = (currentPositionKey > 0) ? currentPositionKey - 1 : 0;
-
+        currentPositionKey = targetPositions.keySet().stream()
+                .filter(k -> k < currentPositionKey)
+                .max(Integer::compareTo)
+                .orElse(currentPositionKey);
     }
 
     public void elevatorDownManual() {
@@ -77,13 +93,16 @@ public class ElevatorSubsystem extends SubsystemBase {
         double currentPosition1 = elevatorMotor1.getPosition().getValueAsDouble();
         double currentPosition2 = elevatorMotor2.getPosition().getValueAsDouble(); // Get current position from encoder
         if (autoMode) {
-            double pidOutput = pid.calculate(currentPosition1, targetPositions.get(currentPositionKey)); // Calculate PID output
+            double pidOutput = pid.calculate(currentPosition1, targetPositions.get(currentPositionKey)); // Calculate
+                                                                                                         // PID output
 
             elevatorMotor1.set(rateLimiter.calculate(pidOutput));
             elevatorMotor2.set(rateLimiter.calculate(pidOutput));
         }
 
-        System.out.println("Encoder Position1 : " + currentPosition1 + " | Target: " + targetPositions.get(currentPositionKey));
-        System.out.println("Encoder Position2 : " + currentPosition2 + " | Target: " + targetPositions.get(currentPositionKey));
+        System.out.println(
+                "Encoder Position1 : " + currentPosition1 + " | Target: " + targetPositions.get(currentPositionKey));
+        System.out.println(
+                "Encoder Position2 : " + currentPosition2 + " | Target: " + targetPositions.get(currentPositionKey));
     }
 }
