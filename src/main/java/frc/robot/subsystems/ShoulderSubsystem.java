@@ -23,15 +23,15 @@ public class ShoulderSubsystem extends SubsystemBase {
     private static final double kP_UP = 0.05;
     private static final double kP_DOWN = 0.05;
     private static final double kI = 0.0;
-    private static final double kD = 0.0;
+    private static final double kD = 0.1;
 
     private PIDController pid;
     private boolean autoMode = false;
 
     private Map<Integer, Double> targetPositions = Map.of(
-            -1, 25.0,
+            -1, 24.5,
             0, 0.0,
-            1, -10.0);
+            1, -7.8);
 
     private int currentPositionKey = 0;
 
@@ -58,7 +58,7 @@ public class ShoulderSubsystem extends SubsystemBase {
                 .orElse(currentPositionKey);
     }
 
-    public void shoulderTop() {
+    public void shoulderBackward() {
         autoMode = true;
         pid.setP(kP_UP);
         currentPositionKey = targetPositions.keySet().stream()
@@ -66,7 +66,7 @@ public class ShoulderSubsystem extends SubsystemBase {
                 .orElse(currentPositionKey);
     }
 
-    public void shoulderBottom() {
+    public void shoulderForward() {
         autoMode = true;
         pid.setP(kP_DOWN);
         currentPositionKey = targetPositions.keySet().stream()

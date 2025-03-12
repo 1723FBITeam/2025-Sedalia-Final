@@ -230,25 +230,35 @@ public class RobotContainer {
                                 climberSubsystem::stopMotor,
                                 climberSubsystem));
 
-                m_commanderController.x().whileTrue(new StartEndCommand(
-                                handSubsystem::intakeAlgae,
-                                handSubsystem::stopMotor,
-                                handSubsystem));
-
-                m_commanderController.b().whileTrue(new StartEndCommand(
-                                handSubsystem::outputAlgaeFull,
-                                handSubsystem::stopMotor,
-                                handSubsystem));
-
-                m_commanderController.a().whileTrue(new StartEndCommand(
-                                handSubsystem::outputAlgaeDouble,
-                                handSubsystem::stopMotor,
-                                handSubsystem));
 
                 m_commanderController.y().whileTrue(new StartEndCommand(
                                 () -> {
                                         elevatorSubsystem.elevatorTop();
-                                        shoulderSubsystem.shoulderBottom();
+                                        shoulderSubsystem.shoulderBackward();
+                                },
+                                handSubsystem::stopMotor,
+                                handSubsystem, shoulderSubsystem, elevatorSubsystem));
+
+                m_commanderController.a().whileTrue(new StartEndCommand(
+                                () -> {
+                                        elevatorSubsystem.elevatorBottom();
+                                        shoulderSubsystem.shoulderForward();
+                                },
+                                handSubsystem::stopMotor,
+                                handSubsystem, shoulderSubsystem, elevatorSubsystem));
+
+                m_commanderController.b().whileTrue(new StartEndCommand(
+                                () -> {
+                                        elevatorSubsystem.elevatorLevel2();
+                                        shoulderSubsystem.shoulderForward();
+                                },
+                                handSubsystem::stopMotor,
+                                handSubsystem, shoulderSubsystem, elevatorSubsystem));
+
+                m_commanderController.x().whileTrue(new StartEndCommand(
+                                () -> {
+                                        elevatorSubsystem.elevatorLevel1();
+                                        shoulderSubsystem.shoulderForward();
                                 },
                                 handSubsystem::stopMotor,
                                 handSubsystem, shoulderSubsystem, elevatorSubsystem));

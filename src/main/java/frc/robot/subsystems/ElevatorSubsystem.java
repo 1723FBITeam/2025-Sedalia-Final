@@ -23,15 +23,16 @@ public class ElevatorSubsystem extends SubsystemBase {
     private static final double kP_UP = 0.05; // Proportional gain
     private static final double kP_DOWN = 0.05; // Proportional gain
     private static final double kI = 0.0; // Integral gain
-    private static final double kD = 0.0; // Derivative gain
+    private static final double kD = 0.01; // Derivative gain
 
     private PIDController pid;
 
     private boolean autoMode = false;
     private Map<Integer, Double> targetPositions = Map.of(
-            0, 2.0,
-            1, 20.0,
-            2, 31.0);
+            0, 2.2,
+            1, 23.5,
+            2, 31.0,
+            3,39.2);
     private int currentPositionKey = 0;
 
     public ElevatorSubsystem() {
@@ -58,6 +59,16 @@ public class ElevatorSubsystem extends SubsystemBase {
         autoMode = true;
         pid.setP(kP_DOWN);
         currentPositionKey = targetPositions.keySet().stream().min(Integer::compareTo).orElse(currentPositionKey);
+    }
+    public void elevatorLevel1() {
+        autoMode = true;
+        pid.setP(kP_DOWN);
+        currentPositionKey = 1;
+    }
+    public void elevatorLevel2() {
+        autoMode = true;
+        pid.setP(kP_DOWN);
+        currentPositionKey = 2;
     }
 
     public void elevatorUpAuto() {
