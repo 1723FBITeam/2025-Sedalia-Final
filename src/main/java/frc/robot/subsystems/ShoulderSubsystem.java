@@ -23,7 +23,7 @@ public class ShoulderSubsystem extends SubsystemBase {
     private static final double kP_UP = 0.05;
     private static final double kP_DOWN = 0.05;
     private static final double kI = 0.0;
-    private static final double kD = 0.1;
+    private static final double kD = 0.0;
 
     private PIDController pid;
     private boolean autoMode = false;

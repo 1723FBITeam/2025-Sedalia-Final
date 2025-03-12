@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.ctre.phoenix6.controls.DutyCycleOut;
@@ -20,10 +19,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private SlewRateLimiter rateLimiter = new SlewRateLimiter(3);
     // PID Constants
-    private static final double kP_UP = 0.05; // Proportional gain
-    private static final double kP_DOWN = 0.05; // Proportional gain
+    private static final double kP_UP = 0.03; // Proportional gain
+    private static final double kP_DOWN = 0.03; // Proportional gain
     private static final double kI = 0.0; // Integral gain
-    private static final double kD = 0.01; // Derivative gain
+    private static final double kD = 0.0; // Derivative gain
 
     private PIDController pid;
 
@@ -32,7 +31,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             0, 2.2,
             1, 23.5,
             2, 31.0,
-            3,39.2);
+            3, 39.0);
     private int currentPositionKey = 0;
 
     public ElevatorSubsystem() {
