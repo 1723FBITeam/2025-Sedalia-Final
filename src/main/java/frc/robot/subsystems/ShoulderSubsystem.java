@@ -29,9 +29,9 @@ public class ShoulderSubsystem extends SubsystemBase {
     private boolean autoMode = false;
 
     private Map<Integer, Double> targetPositions = Map.of(
-            -1, -5.0,
+            -1, 25.0,
             0, 0.0,
-            1, 10.0);
+            1, -10.0);
 
     private int currentPositionKey = 0;
 
@@ -110,6 +110,6 @@ public class ShoulderSubsystem extends SubsystemBase {
         }
 
         SmartDashboard.putNumber("Shoulder ", currentPosition);
-        System.out.println("Shoulder: " + currentPosition + " | Target: " + targetPositions.get(currentPositionKey));
+        // System.out.println("Shoulder: " + currentPosition + " | Target: " + targetPositions.get(currentPositionKey));
     }
 }

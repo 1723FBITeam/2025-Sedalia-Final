@@ -66,7 +66,6 @@ public class RobotContainer {
         private final GenericEntry xButtonEntry = driverTab.add("X Button Pressed", false).getEntry();
         private final GenericEntry yButtonEntry = driverTab.add("Y Button Pressed", false).getEntry();
 
-        private final WristSubsystem wristSubsystem = new WristSubsystem();
         private final ShoulderSubsystem shoulderSubsystem = new ShoulderSubsystem();
         private final HandSubsystem handSubsystem = new HandSubsystem();
 
@@ -221,24 +220,15 @@ public class RobotContainer {
                                 elevatorSubsystem::stopMotor,
                                 elevatorSubsystem));
 
-                // m_commanderController.start().whileTrue(new StartEndCommand(
-                // climberSubsystem::climberUp,
-                // climberSubsystem::stopMotor,
-                // climberSubsystem));
+                m_commanderController.start().whileTrue(new StartEndCommand(
+                                climberSubsystem::climberUp,
+                                climberSubsystem::stopMotor,
+                                climberSubsystem));
 
-                // m_commanderController.back().whileTrue(new StartEndCommand(
-                // climberSubsystem::climberDown,
-                // climberSubsystem::stopMotor,
-                // climberSubsystem));
-
-                // m_commanderController.leftBumper().whileTrue(new StartEndCommand(
-                // climberSubsystem::clawClose,
-                // climberSubsystem::stopClaw,
-                // climberSubsystem));
-                // m_commanderController.rightBumper().whileTrue(new StartEndCommand(
-                // climberSubsystem::clawOpen,
-                // climberSubsystem::stopClaw,
-                // climberSubsystem));
+                m_commanderController.back().whileTrue(new StartEndCommand(
+                                climberSubsystem::climberDown,
+                                climberSubsystem::stopMotor,
+                                climberSubsystem));
 
                 m_commanderController.x().whileTrue(new StartEndCommand(
                                 handSubsystem::intakeAlgae,

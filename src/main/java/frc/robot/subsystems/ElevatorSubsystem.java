@@ -10,6 +10,7 @@ import com.ctre.phoenix6.controls.StaticBrake;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -29,8 +30,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     private boolean autoMode = false;
     private Map<Integer, Double> targetPositions = Map.of(
             0, 2.0,
-            1, 10.0,
-            2, 20.0);
+            1, 20.0,
+            2, 31.0);
     private int currentPositionKey = 0;
 
     public ElevatorSubsystem() {
@@ -99,10 +100,12 @@ public class ElevatorSubsystem extends SubsystemBase {
             elevatorMotor1.set(rateLimiter.calculate(pidOutput));
             elevatorMotor2.set(rateLimiter.calculate(pidOutput));
         }
-
-        System.out.println(
-                "Encoder Position1 : " + currentPosition1 + " | Target: " + targetPositions.get(currentPositionKey));
-        System.out.println(
-                "Encoder Position2 : " + currentPosition2 + " | Target: " + targetPositions.get(currentPositionKey));
+        SmartDashboard.putNumber("Elevator ", currentPosition1);
+        // System.out.println(
+        // "Encoder Position1 : " + currentPosition1 + " | Target: " +
+        // targetPositions.get(currentPositionKey));
+        // System.out.println(
+        // "Encoder Position2 : " + currentPosition2 + " | Target: " +
+        // targetPositions.get(currentPositionKey));
     }
 }
