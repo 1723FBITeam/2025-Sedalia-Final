@@ -36,11 +36,6 @@ public class WristSubsystem extends SubsystemBase {
 
     public void toggleRotation() {
         needToRotate = !needToRotate;
-        if (needToRotate){
-            pid.setP(kP_ROTATED);
-        } else{
-            pid.setP(kP_BASE);
-        }
 
         targetPosition = needToRotate ? TARGET_TICKS : 0; // Toggle between target position and zero
     }
