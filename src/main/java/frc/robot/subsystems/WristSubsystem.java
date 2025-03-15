@@ -35,8 +35,17 @@ public class WristSubsystem extends SubsystemBase {
 
     public void toggleRotation() {
         needToRotate = !needToRotate;
-
         targetPosition = needToRotate ? TARGET_TICKS : 0; // Toggle between target position and zero
+    }
+
+    // TODO: verify these are good and not flipped
+    public void wristHorizontal() {
+        needToRotate = true;
+        targetPosition = TARGET_TICKS; 
+    }
+    public void wristVertical() {
+        needToRotate = false;
+        targetPosition = 0; 
     }
 
     @Override

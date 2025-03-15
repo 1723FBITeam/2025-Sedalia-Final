@@ -40,7 +40,8 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
+                                                                                      // max angular velocity
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -57,22 +58,22 @@ public class RobotContainer {
 
     private final CommandXboxController m_driverController = new CommandXboxController(ControllerPorts.Driver);
     private final CommandXboxController m_commanderController = new CommandXboxController(
-        ControllerPorts.Commander);
+            ControllerPorts.Commander);
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     private final ShuffleboardTab driverTab = Shuffleboard.getTab("Driver Controls");
-  
+
     private final GenericEntry aButtonEntry = driverTab.add("A Button Pressed", false).getEntry();
     private final GenericEntry bButtonEntry = driverTab.add("B Button Pressed", false).getEntry();
     private final GenericEntry xButtonEntry = driverTab.add("X Button Pressed", false).getEntry();
     private final GenericEntry yButtonEntry = driverTab.add("Y Button Pressed", false).getEntry();
-  
+
     private final WristSubsystem wristSubsystem = new WristSubsystem();
     private final ShoulderSubsystem shoulderSubsystem = new ShoulderSubsystem();
     private final HandSubsystem handSubsystem = new HandSubsystem();
-  
+
     private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
     private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
-  
+
     private final SlewRateLimiter xLimiter = new SlewRateLimiter(3.0);
     private final SlewRateLimiter yLimiter = new SlewRateLimiter(3.0);
     private final SlewRateLimiter rotationLimiter = new SlewRateLimiter(6.0);
@@ -89,79 +90,79 @@ public class RobotContainer {
         setLimelight();
     }
 
-private void setLimelight(){
-    new Thread(() -> {
-        while (true) {
-          // Continuously update Shuffleboard button states
-          // Get the Limelight NetworkTable
-          NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-          NetworkTableEntry tx = table.getEntry("tx");
-          NetworkTableEntry ty = table.getEntry("ty");
-          NetworkTableEntry ta = table.getEntry("ta");
-          NetworkTableEntry tid = table.getEntry("tid");
-  
-          // Read values from Limelight
-          double x = tx.getDouble(0.0); // Horizontal offset from crosshair to target
-          double y = ty.getDouble(0.0); // Vertical offset from crosshair to target
-          double area = ta.getDouble(0.0); // Target area (0 to 100%)
-          double id = tid.getDouble(0.0);
-          // Post values to Shuffleboard
-          SmartDashboard.putNumber("Limelight Tag ID", id);
-          SmartDashboard.putNumber("LimelightX", x);
-          SmartDashboard.putNumber("LimelightY", y);
-          SmartDashboard.putNumber("LimelightArea", area);
-          // Sleep for a short duration to prevent overloading CPU
-          Timer.delay(0.05); // 50ms delay
-        }
-      }).start();
-}
+    private void setLimelight() {
+        new Thread(() -> {
+            while (true) {
+                // Continuously update Shuffleboard button states
+                // Get the Limelight NetworkTable
+                NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+                NetworkTableEntry tx = table.getEntry("tx");
+                NetworkTableEntry ty = table.getEntry("ty");
+                NetworkTableEntry ta = table.getEntry("ta");
+                NetworkTableEntry tid = table.getEntry("tid");
 
-private void startButtonUpdater() {
-    new Thread(() -> {
-      while (true) {
-        // Continuously update Shuffleboard button states
-        aButtonEntry.setBoolean(m_driverController.a().getAsBoolean());
-        bButtonEntry.setBoolean(m_driverController.b().getAsBoolean());
-        xButtonEntry.setBoolean(m_driverController.x().getAsBoolean());
-        yButtonEntry.setBoolean(m_driverController.y().getAsBoolean());
+                // Read values from Limelight
+                double x = tx.getDouble(0.0); // Horizontal offset from crosshair to target
+                double y = ty.getDouble(0.0); // Vertical offset from crosshair to target
+                double area = ta.getDouble(0.0); // Target area (0 to 100%)
+                double id = tid.getDouble(0.0);
+                // Post values to Shuffleboard
+                SmartDashboard.putNumber("Limelight Tag ID", id);
+                SmartDashboard.putNumber("LimelightX", x);
+                SmartDashboard.putNumber("LimelightY", y);
+                SmartDashboard.putNumber("LimelightArea", area);
+                // Sleep for a short duration to prevent overloading CPU
+                Timer.delay(0.05); // 50ms delay
+            }
+        }).start();
+    }
 
-        // Sleep for a short duration to prevent overloading CPU
-        Timer.delay(0.05); // 50ms delay
-      }
-    }).start();
-  }
+    private void startButtonUpdater() {
+        new Thread(() -> {
+            while (true) {
+                // Continuously update Shuffleboard button states
+                aButtonEntry.setBoolean(m_driverController.a().getAsBoolean());
+                bButtonEntry.setBoolean(m_driverController.b().getAsBoolean());
+                xButtonEntry.setBoolean(m_driverController.x().getAsBoolean());
+                yButtonEntry.setBoolean(m_driverController.y().getAsBoolean());
 
-  private void setupCamera() {
-    UsbCamera camera = CameraServer.startAutomaticCapture();
-    camera.setResolution(500, 300);
-    camera.setFPS(15);
-  }
+                // Sleep for a short duration to prevent overloading CPU
+                Timer.delay(0.05); // 50ms delay
+            }
+        }).start();
+    }
 
-            // THIS IS WHERE YOU CHANGE THE SPEED!!!
-        private void configureBindings() {
-            // Note that X is defined as forward according to WPILib convention,
-            // and Y is defined as to the left according to WPILib convention.
-            drivetrain.setDefaultCommand(
-                            // Drivetrain will execute this command periodically
-                            drivetrain.applyRequest(() -> drive
-                                            .withVelocityX(xLimiter
-                                                            .calculate(-joystick.getLeftY() * 0.7 * MaxSpeed))
-                                            .withVelocityY(yLimiter
-                                                            .calculate(-joystick.getLeftX() * 0.7 * MaxSpeed))
-                                            .withRotationalRate(rotationLimiter.calculate(
-                                                            -joystick.getRightX() * 0.85 * MaxAngularRate))));
+    private void setupCamera() {
+        UsbCamera camera = CameraServer.startAutomaticCapture();
+        camera.setResolution(500, 300);
+        camera.setFPS(15);
+    }
 
+    // THIS IS WHERE YOU CHANGE THE SPEED!!!
+    private void configureBindings() {
+        // Note that X is defined as forward according to WPILib convention,
+        // and Y is defined as to the left according to WPILib convention.
+        drivetrain.setDefaultCommand(
+                // Drivetrain will execute this command periodically
+                drivetrain.applyRequest(() -> drive
+                        .withVelocityX(xLimiter
+                                .calculate(-joystick.getLeftY() * 0.7 * MaxSpeed))
+                        .withVelocityY(yLimiter
+                                .calculate(-joystick.getLeftX() * 0.7 * MaxSpeed))
+                        .withRotationalRate(rotationLimiter.calculate(
+                                -joystick.getRightX() * 0.85 * MaxAngularRate))));
 
         // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         // joystick.b().whileTrue(drivetrain.applyRequest(() ->
-        //     point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
+        // point.withModuleDirection(new Rotation2d(-joystick.getLeftY(),
+        // -joystick.getLeftX()))
         // ));
 
         // joystick.pov(0).whileTrue(drivetrain.applyRequest(() ->
-        //     forwardStraight.withVelocityX(0.5).withVelocityY(0))
+        // forwardStraight.withVelocityX(0.5).withVelocityY(0))
         // );
         // joystick.pov(180).whileTrue(drivetrain.applyRequest(() ->
-        //     forwardStraight.withVelocityX(-0.5).withVelocityY(0))
+        // forwardStraight.withVelocityX(-0.5).withVelocityY(0))
         // );
 
         // Run SysId routines when holding back/start and X/Y.
@@ -174,114 +175,124 @@ private void startButtonUpdater() {
         // reset the field-centric heading on left bumper press
         m_driverController.back().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-    drivetrain.registerTelemetry(logger::telemeterize);
+        drivetrain.registerTelemetry(logger::telemeterize);
 
-    m_driverController.a().whileTrue(new StartEndCommand(
-        wristSubsystem::toggleRotation,
-        () -> {
-        },
-        wristSubsystem));
+        // Driver Controller Commands
+        m_driverController.a().whileTrue(new StartEndCommand(
+                wristSubsystem::toggleRotation,
+                () -> {
+                },
+                wristSubsystem));
 
-    m_driverController.b().whileTrue(new StartEndCommand(
-        handSubsystem::intakeCoral,
-        handSubsystem::stopMotor,
-        handSubsystem));
+        m_driverController.b().whileTrue(new StartEndCommand(
+                handSubsystem::intakeCoral,
+                handSubsystem::stopMotor,
+                handSubsystem));
 
-    m_driverController.x().whileTrue(new StartEndCommand(
-        handSubsystem::outputCoral,
-        handSubsystem::stopMotor,
-        handSubsystem));
+        m_driverController.x().whileTrue(new StartEndCommand(
+                handSubsystem::outputCoral,
+                handSubsystem::stopMotor,
+                handSubsystem));
 
+        m_driverController.leftBumper().whileTrue(new StartEndCommand(
+                shoulderSubsystem::shoulderUp,
+                shoulderSubsystem::stopMotor,
+                shoulderSubsystem));
 
-m_driverController.leftBumper().whileTrue(new StartEndCommand(
-        shoulderSubsystem::shoulderUp,
-        shoulderSubsystem::stopMotor,
-        shoulderSubsystem));
-
-m_driverController.leftTrigger().whileTrue(new StartEndCommand(
+        m_driverController.leftTrigger().whileTrue(new StartEndCommand(
                 shoulderSubsystem::shoulderDown,
                 shoulderSubsystem::stopMotor,
                 shoulderSubsystem));
-m_driverController.rightBumper().whileTrue(new StartEndCommand(
+        m_driverController.rightBumper().whileTrue(new StartEndCommand(
                 elevatorSubsystem::elevatorUpManual,
                 elevatorSubsystem::stopMotor,
                 elevatorSubsystem));
 
-m_driverController.rightTrigger().whileTrue(new StartEndCommand(
+        m_driverController.rightTrigger().whileTrue(new StartEndCommand(
                 elevatorSubsystem::elevatorDownManual,
                 elevatorSubsystem::stopMotor,
                 elevatorSubsystem));
 
 
-
-
-
-
-m_commanderController.start().whileTrue(new StartEndCommand(
+        // Command Controller Commands
+        m_commanderController.start().whileTrue(new StartEndCommand(
                 climberSubsystem::climberUp,
                 climberSubsystem::stopMotor,
                 climberSubsystem));
 
-    m_commanderController.back().whileTrue(new StartEndCommand(
+        m_commanderController.back().whileTrue(new StartEndCommand(
                 climberSubsystem::climberDown,
                 climberSubsystem::stopMotor,
                 climberSubsystem));
 
-    m_commanderController.a().whileTrue(new StartEndCommand(
+        m_commanderController.a().whileTrue(new StartEndCommand(
                 () -> {
-                elevatorSubsystem.elevatorBottom();
-                            shoulderSubsystem.shoulderForward();
+                    wristSubsystem.wristHorizontal();
+                    elevatorSubsystem.elevatorBottom();
+                    shoulderSubsystem.shoulderForward();
                 },
-                handSubsystem::stopMotor,
-                handSubsystem, shoulderSubsystem, elevatorSubsystem));
+                ()->{
 
-    m_commanderController.b().whileTrue(new StartEndCommand(
-                    () -> {
-                            elevatorSubsystem.elevatorLevelGround();
-                            shoulderSubsystem.shoulderForward();
-                    },
-                    handSubsystem::stopMotor,
-                    handSubsystem, shoulderSubsystem, elevatorSubsystem));
+                },
+                wristSubsystem, shoulderSubsystem, elevatorSubsystem));
 
-    m_commanderController.x().whileTrue(new StartEndCommand(
-                    () -> {
-                            elevatorSubsystem.elevatorLevelStation();
-                            shoulderSubsystem.shoulderBackward();
-                    },
-                    handSubsystem::stopMotor,
-                    handSubsystem, shoulderSubsystem, elevatorSubsystem));
+        m_commanderController.b().whileTrue(new StartEndCommand(
+                () -> {
+                    wristSubsystem.wristHorizontal();
+                    elevatorSubsystem.elevatorLevelGround();
+                    shoulderSubsystem.shoulderForward();
+                },
+                ()->{
 
-    m_commanderController.y().whileTrue(new StartEndCommand(
-                    () -> {
+                },
+                wristSubsystem, shoulderSubsystem, elevatorSubsystem));
+
+        m_commanderController.x().whileTrue(new StartEndCommand(
+                () -> {
+                    wristSubsystem.wristHorizontal();
+                    elevatorSubsystem.elevatorLevelStation();
+                    shoulderSubsystem.shoulderBackward();
+                },
+                ()->{
+
+                },
+                wristSubsystem, shoulderSubsystem, elevatorSubsystem));
+
+        m_commanderController.y().whileTrue(new StartEndCommand(
+                () -> {
+                    wristSubsystem.wristVertical();
                     elevatorSubsystem.Level4();
                     shoulderSubsystem.shoulderForward();
-                    },
-                    handSubsystem::stopMotor,
-                    handSubsystem, shoulderSubsystem, elevatorSubsystem));
+                },
+                ()->{
 
-    m_commanderController.leftBumper().whileTrue(new StartEndCommand(
-                    shoulderSubsystem::shoulderUpAuto,
-                    () -> {
-                    },
-                    shoulderSubsystem));
+                },
+                wristSubsystem, shoulderSubsystem, elevatorSubsystem));
 
-    m_commanderController.leftTrigger().whileTrue(new StartEndCommand(
-                    shoulderSubsystem::shoulderDownAuto,
-                    () -> {
-                    },
-                    shoulderSubsystem));
-    m_commanderController.rightBumper().whileTrue(new StartEndCommand(
-                    elevatorSubsystem::elevatorUpAuto,
-                    () -> {
-                    },
-                    elevatorSubsystem));
+        m_commanderController.leftBumper().whileTrue(new StartEndCommand(
+                shoulderSubsystem::shoulderUpAuto,
+                () -> {
+                },
+                shoulderSubsystem));
 
-    m_commanderController.rightTrigger().whileTrue(new StartEndCommand(
-                    elevatorSubsystem::elevatorDownAuto,
-                    () -> {
-                    },
-                    elevatorSubsystem));
-                }
+        m_commanderController.leftTrigger().whileTrue(new StartEndCommand(
+                shoulderSubsystem::shoulderDownAuto,
+                () -> {
+                },
+                shoulderSubsystem));
+        m_commanderController.rightBumper().whileTrue(new StartEndCommand(
+                elevatorSubsystem::elevatorUpAuto,
+                () -> {
+                },
+                elevatorSubsystem));
+
+        m_commanderController.rightTrigger().whileTrue(new StartEndCommand(
+                elevatorSubsystem::elevatorDownAuto,
+                () -> {
+                },
+                elevatorSubsystem));
+    }
+
     public Command getAutonomousCommand() {
         /* Run the path selected from the auto chooser */
         return autoChooser.getSelected();
