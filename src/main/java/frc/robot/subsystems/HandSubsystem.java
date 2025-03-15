@@ -16,7 +16,6 @@ public class HandSubsystem extends SubsystemBase {
     public HandSubsystem() {
 
     }
-
     
     public void intakeCoral() {
         coralMoter.set(MOTOR_POWER);

@@ -35,7 +35,6 @@ import frc.robot.subsystems.HandSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.Constants.ControllerPorts;
-// import frc.robot.commands.DropCoralCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
@@ -138,25 +137,20 @@ private void startButtonUpdater() {
     camera.setFPS(15);
   }
 
-    private void configureBindings() {
-        // Note that X is defined as forward according to WPILib convention,
-        // and Y is defined as to the left according to WPILib convention.
-        drivetrain.setDefaultCommand(
-            // Drivetrain will execute this command periodically
-            drivetrain.applyRequest(() -> drive.withVelocityX(xLimiter.calculate(-joystick.getLeftY() *0.9* MaxSpeed)) // Drive
-                                                                                               // forward
-                                                                                               // with
-                                                                                               // negative
-                                                                                               // Y
-                                                                                               // (forward)
-                            .withVelocityY(yLimiter.calculate(-joystick.getLeftX()*0.9 * MaxSpeed)) // Drive left with
-                                                                            // negative X (left)
-                            .withRotationalRate(rotationLimiter.calculate(-joystick.getRightX() * 1.25* MaxAngularRate)) // Drive
-                                                                                        // counterclockwise
-                                                                                        // with
-                                                                                        // negative
-                                                                                        // X (left)
-            ));
+            // THIS IS WHERE YOU CHANGE THE SPEED!!!
+        private void configureBindings() {
+            // Note that X is defined as forward according to WPILib convention,
+            // and Y is defined as to the left according to WPILib convention.
+            drivetrain.setDefaultCommand(
+                            // Drivetrain will execute this command periodically
+                            drivetrain.applyRequest(() -> drive
+                                            .withVelocityX(xLimiter
+                                                            .calculate(-joystick.getLeftY() * 0.7 * MaxSpeed))
+                                            .withVelocityY(yLimiter
+                                                            .calculate(-joystick.getLeftX() * 0.7 * MaxSpeed))
+                                            .withRotationalRate(rotationLimiter.calculate(
+                                                            -joystick.getRightX() * 0.85 * MaxAngularRate))));
+
 
         // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         // joystick.b().whileTrue(drivetrain.applyRequest(() ->
@@ -193,61 +187,101 @@ private void startButtonUpdater() {
         handSubsystem::stopMotor,
         handSubsystem));
 
-        m_driverController.x().whileTrue(new StartEndCommand(
-            handSubsystem::outputCoral,
-            handSubsystem::stopMotor,
-            handSubsystem));
+    m_driverController.x().whileTrue(new StartEndCommand(
+        handSubsystem::outputCoral,
+        handSubsystem::stopMotor,
+        handSubsystem));
 
 
-    m_driverController.leftBumper().whileTrue(new StartEndCommand(
+m_driverController.leftBumper().whileTrue(new StartEndCommand(
         shoulderSubsystem::shoulderUp,
         shoulderSubsystem::stopMotor,
         shoulderSubsystem));
 
-    m_driverController.leftTrigger().whileTrue(new StartEndCommand(
-        shoulderSubsystem::shoulderDown,
-        shoulderSubsystem::stopMotor,
-        shoulderSubsystem));
+m_driverController.leftTrigger().whileTrue(new StartEndCommand(
+                shoulderSubsystem::shoulderDown,
+                shoulderSubsystem::stopMotor,
+                shoulderSubsystem));
+m_driverController.rightBumper().whileTrue(new StartEndCommand(
+                elevatorSubsystem::elevatorUpManual,
+                elevatorSubsystem::stopMotor,
+                elevatorSubsystem));
 
-    m_driverController.rightBumper().whileTrue(new StartEndCommand(
-        elevatorSubsystem::elevatorUp,
-        elevatorSubsystem::stopMotor,
-        elevatorSubsystem));
+m_driverController.rightTrigger().whileTrue(new StartEndCommand(
+                elevatorSubsystem::elevatorDownManual,
+                elevatorSubsystem::stopMotor,
+                elevatorSubsystem));
 
-    m_driverController.rightTrigger().whileTrue(new StartEndCommand(
-        elevatorSubsystem::elevatorDown,
-        elevatorSubsystem::stopMotor,
-        elevatorSubsystem));
 
-        m_commanderController.x().whileTrue(new StartEndCommand(
-            ()->{
-                elevatorSubsystem.elevatorTop();
-                shoulderSubsystem.shoulderUp();
-            },
-            ()->{
 
-            },
-             elevatorSubsystem, shoulderSubsystem));
-    // m_commanderController.start().whileTrue(new StartEndCommand(
-    //     climberSubsystem::climberUp,
-    //     climberSubsystem::stopMotor,
-    //     climberSubsystem));
 
-    // m_commanderController.back().whileTrue(new StartEndCommand(
-    //     climberSubsystem::climberDown,
-    //     climberSubsystem::stopMotor,
-    //     climberSubsystem));
 
-    // m_commanderController.leftBumper().whileTrue(new StartEndCommand(
-    //     climberSubsystem::clawClose,
-    //     climberSubsystem::stopClaw,
-    //     climberSubsystem));
-    // m_commanderController.rightBumper().whileTrue(new StartEndCommand(
-    //     climberSubsystem::clawOpen,
-    //     climberSubsystem::stopClaw,
-    //     climberSubsystem));
-    }
 
+m_commanderController.start().whileTrue(new StartEndCommand(
+                climberSubsystem::climberUp,
+                climberSubsystem::stopMotor,
+                climberSubsystem));
+
+    m_commanderController.back().whileTrue(new StartEndCommand(
+                climberSubsystem::climberDown,
+                climberSubsystem::stopMotor,
+                climberSubsystem));
+
+    m_commanderController.a().whileTrue(new StartEndCommand(
+                () -> {
+                elevatorSubsystem.elevatorBottom();
+                            shoulderSubsystem.shoulderForward();
+                },
+                handSubsystem::stopMotor,
+                handSubsystem, shoulderSubsystem, elevatorSubsystem));
+
+    m_commanderController.b().whileTrue(new StartEndCommand(
+                    () -> {
+                            elevatorSubsystem.elevatorLevelGround();
+                            shoulderSubsystem.shoulderForward();
+                    },
+                    handSubsystem::stopMotor,
+                    handSubsystem, shoulderSubsystem, elevatorSubsystem));
+
+    m_commanderController.x().whileTrue(new StartEndCommand(
+                    () -> {
+                            elevatorSubsystem.elevatorLevelStation();
+                            shoulderSubsystem.shoulderBackward();
+                    },
+                    handSubsystem::stopMotor,
+                    handSubsystem, shoulderSubsystem, elevatorSubsystem));
+
+    m_commanderController.y().whileTrue(new StartEndCommand(
+                    () -> {
+                    elevatorSubsystem.Level4();
+                    shoulderSubsystem.shoulderForward();
+                    },
+                    handSubsystem::stopMotor,
+                    handSubsystem, shoulderSubsystem, elevatorSubsystem));
+
+    m_commanderController.leftBumper().whileTrue(new StartEndCommand(
+                    shoulderSubsystem::shoulderUpAuto,
+                    () -> {
+                    },
+                    shoulderSubsystem));
+
+    m_commanderController.leftTrigger().whileTrue(new StartEndCommand(
+                    shoulderSubsystem::shoulderDownAuto,
+                    () -> {
+                    },
+                    shoulderSubsystem));
+    m_commanderController.rightBumper().whileTrue(new StartEndCommand(
+                    elevatorSubsystem::elevatorUpAuto,
+                    () -> {
+                    },
+                    elevatorSubsystem));
+
+    m_commanderController.rightTrigger().whileTrue(new StartEndCommand(
+                    elevatorSubsystem::elevatorDownAuto,
+                    () -> {
+                    },
+                    elevatorSubsystem));
+                }
     public Command getAutonomousCommand() {
         /* Run the path selected from the auto chooser */
         return autoChooser.getSelected();
