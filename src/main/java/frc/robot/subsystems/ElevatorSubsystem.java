@@ -116,7 +116,7 @@ private PIDController pid;
     }
 
     public void stopMotor() {
-        elevatorMotor1.setControl(new DutyCycleOut(.018));
+        elevatorMotor1.setControl(new DutyCycleOut(.018)); //.03?
         elevatorMotor2.setControl(new DutyCycleOut(.018));
     }
 

@@ -29,7 +29,7 @@ public class ShoulderSubsystem extends SubsystemBase {
     private boolean autoMode = false;
 
     private Map<Integer, Double> targetPositions = Map.of(
-            -1, 15.0,
+            -1, 24.5,
             0, 0.0,
             1, -7.8);
 

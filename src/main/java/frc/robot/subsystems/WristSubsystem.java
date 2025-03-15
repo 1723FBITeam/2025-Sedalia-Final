@@ -18,6 +18,7 @@ public class WristSubsystem extends SubsystemBase {
 
     // PID Constants
 
+    private static final double kP_ROTATED = 5; // Proportional gain
     private static final double kP_BASE = 1; // Proportional gain
     private static final double kI = 0.0; // Integral gain
     private static final double kD = 0.0; // Derivative gain
@@ -35,8 +36,23 @@ public class WristSubsystem extends SubsystemBase {
 
     public void toggleRotation() {
         needToRotate = !needToRotate;
+        if (needToRotate){
+            pid.setP(kP_ROTATED);
+        } else{
+            pid.setP(kP_BASE);
+        }
 
         targetPosition = needToRotate ? TARGET_TICKS : 0; // Toggle between target position and zero
+    }
+
+    // TODO: verify these are good and not flipped
+    public void wristHorizontal() {
+        needToRotate = true;
+        targetPosition = TARGET_TICKS; 
+    }
+    public void wristVertical() {
+        needToRotate = false;
+        targetPosition = 0; 
     }
 
     @Override
