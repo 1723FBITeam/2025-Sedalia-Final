@@ -29,9 +29,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     private boolean autoMode = false;
     private Map<Integer, Double> targetPositions = Map.of(
             0, 2.2,
-            1, 23.5,
-            2, 32.0,
-            3, 39.0);
+            1, 21.5,
+            2, 30.0,
+            3, 38.9);
     private int currentPositionKey = 0;
 
     public ElevatorSubsystem() {

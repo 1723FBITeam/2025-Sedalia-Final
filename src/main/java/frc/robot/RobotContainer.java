@@ -9,11 +9,16 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.events.EventTrigger;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -80,12 +85,34 @@ public class RobotContainer {
         private final SendableChooser<Command> autoChooser;
 
         public RobotContainer() {
+                NamedCommands.registerCommand("GrabAlgae", Commands.run(() -> {
+                        handSubsystem.intakeAlgae();
+                }, handSubsystem));
+                NamedCommands.registerCommand("StopAlgae", Commands.run(() -> {
+                        handSubsystem.stopMotor();
+                }, handSubsystem));
+                NamedCommands.registerCommand("OutputAlgae", Commands.run(() -> {
+                        handSubsystem.outputAlgaeDouble();
+                }, handSubsystem));
+                new EventTrigger("setLevel1Algae").onTrue(Commands.runOnce(() -> {
+                        elevatorSubsystem.elevatorLevel1();
+                        shoulderSubsystem.shoulderForward();
+                }, elevatorSubsystem, shoulderSubsystem));
+                new EventTrigger("BargeScore").onTrue(Commands.runOnce(() -> {
+                        elevatorSubsystem.elevatorTop();
+                        shoulderSubsystem.shoulderBackward();
+                }, elevatorSubsystem, shoulderSubsystem ));
+
+
+
+
+
                 autoChooser = AutoBuilder.buildAutoChooser("Tests");
                 SmartDashboard.putData("Auto Mode", autoChooser);
 
                 configureBindings();
                 startButtonUpdater();
-                setupCamera();
+                // setupCamera();
                 setLimelight();
         }
 
@@ -151,7 +178,7 @@ public class RobotContainer {
                                                 .withRotationalRate(rotationLimiter.calculate(
                                                                 -joystick.getRightX() * 0.85 * MaxAngularRate))));
 
-                // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+                m_driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
                 // joystick.b().whileTrue(drivetrain.applyRequest(() ->
                 // point.withModuleDirection(new Rotation2d(-joystick.getLeftY(),
                 // -joystick.getLeftX()))
@@ -192,12 +219,8 @@ public class RobotContainer {
                                 handSubsystem::stopMotor,
                                 handSubsystem));
 
-                m_driverController.a().whileTrue(new StartEndCommand(
-                                handSubsystem::outputAlgaeDouble,
-                                handSubsystem::stopMotor,
-                                handSubsystem));
                 m_driverController.y().whileTrue(new StartEndCommand(
-                                handSubsystem::outputAlgaeHalf,
+                                handSubsystem::outputAlgaeDouble,
                                 handSubsystem::stopMotor,
                                 handSubsystem));
 
@@ -229,7 +252,6 @@ public class RobotContainer {
                                 climberSubsystem::climberDown,
                                 climberSubsystem::stopMotor,
                                 climberSubsystem));
-
 
                 m_commanderController.y().whileTrue(new StartEndCommand(
                                 () -> {
