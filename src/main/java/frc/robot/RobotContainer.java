@@ -92,7 +92,7 @@ public class RobotContainer {
                         handSubsystem.stopMotor();
                 }, handSubsystem));
                 NamedCommands.registerCommand("OutputAlgae", Commands.run(() -> {
-                        handSubsystem.outputAlgaeDouble();
+                        handSubsystem.outputAlgaeBarge();
                 }, handSubsystem));
                 NamedCommands.registerCommand("AlgaeDown", Commands.run(() -> {
                         elevatorSubsystem.elevatorLevel1();
@@ -185,7 +185,7 @@ public class RobotContainer {
                                                 .withRotationalRate(rotationLimiter.calculate(
                                                                 -joystick.getRightX() * 0.85 * MaxAngularRate))));
 
-                m_driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
+                // m_driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
                 // joystick.b().whileTrue(drivetrain.applyRequest(() ->
                 // point.withModuleDirection(new Rotation2d(-joystick.getLeftY(),
                 // -joystick.getLeftX()))
@@ -222,12 +222,12 @@ public class RobotContainer {
                                 handSubsystem));
 
                 m_driverController.b().whileTrue(new StartEndCommand(
-                                handSubsystem::outputAlgaeFull,
+                                handSubsystem::outputAlgaeProcessor,
                                 handSubsystem::stopMotor,
                                 handSubsystem));
 
                 m_driverController.y().whileTrue(new StartEndCommand(
-                                handSubsystem::outputAlgaeDouble,
+                                handSubsystem::outputAlgaeBarge,
                                 handSubsystem::stopMotor,
                                 handSubsystem));
 
