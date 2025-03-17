@@ -29,10 +29,10 @@ public class ShoulderSubsystem extends SubsystemBase {
     private boolean autoMode = false;
 
     private Map<Integer, Double> targetPositions = Map.of(
-            -2, 26.9, // ground
+            -2, 27.0, // ground
             -1, 7.0, // reef
             0, 0.0,
-            1, -7.8 // players station
+            1, -16.5 // players station
             );
 
     private int currentPositionKey = 0;

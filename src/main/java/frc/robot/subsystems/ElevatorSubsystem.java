@@ -19,8 +19,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private SlewRateLimiter rateLimiter = new SlewRateLimiter(3);
     // PID Constants
-    private static final double kP_UP = 0.03; // Proportional gain
-    private static final double kP_DOWN = 0.03; // Proportional gain
+    private static final double kP_UP = 0.025; // Proportional gain
+    private static final double kP_DOWN = 0.025; // Proportional gain
     private static final double kI = 0.0; // Integral gain
     private static final double kD = 0.0; // Derivative gain
 
@@ -32,7 +32,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             1, 15.0, // L1
             2, 10.5, // L2
             3, 17.0, // L3
-            4, 38.6 // L4
+            4, 38.4 // L4
     );
     private int currentPositionKey = 0;
 
