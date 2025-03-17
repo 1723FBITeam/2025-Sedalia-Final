@@ -94,8 +94,15 @@ public class RobotContainer {
                 NamedCommands.registerCommand("OutputAlgae", Commands.run(() -> {
                         handSubsystem.outputAlgaeDouble();
                 }, handSubsystem));
-                new EventTrigger("setLevel1Algae").onTrue(Commands.runOnce(() -> {
+                NamedCommands.registerCommand("AlgaeDown", Commands.run(() -> {
                         elevatorSubsystem.elevatorLevel1();
+                }, elevatorSubsystem, shoulderSubsystem));
+                new EventTrigger("seyLevel1Algae").onTrue(Commands.runOnce(() -> {
+                        elevatorSubsystem.elevatorLevel1();
+                        shoulderSubsystem.shoulderForward();
+                }, elevatorSubsystem, shoulderSubsystem));
+                new EventTrigger("setLevel2Algae").onTrue(Commands.runOnce(() -> {
+                        elevatorSubsystem.elevatorLevel2();
                         shoulderSubsystem.shoulderForward();
                 }, elevatorSubsystem, shoulderSubsystem));
                 new EventTrigger("BargeScore").onTrue(Commands.runOnce(() -> {
