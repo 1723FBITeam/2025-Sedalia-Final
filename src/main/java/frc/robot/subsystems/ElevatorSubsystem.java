@@ -17,27 +17,23 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final TalonFX elevatorMotor1 = new TalonFX(Constants.ElevatorPorts.Motor1);
     private final TalonFX elevatorMotor2 = new TalonFX(Constants.ElevatorPorts.Motor2);
 
- private SlewRateLimiter rateLimiter = new SlewRateLimiter(3);
+    private SlewRateLimiter rateLimiter = new SlewRateLimiter(3);
     // PID Constants
     private static final double kP_UP = 0.03; // Proportional gain
     private static final double kP_DOWN = 0.03; // Proportional gain
     private static final double kI = 0.0; // Integral gain
     private static final double kD = 0.0; // Derivative gain
 
-   
-
-
-private PIDController pid;
+    private PIDController pid;
 
     private boolean autoMode = false;
     private Map<Integer, Double> targetPositions = Map.of(
-            0, 2.2,  //lowest point, will be used for ground intake
-            1, 23.5, //player station intake
-            2, 15.0, //L1
-            3, 23.5, //L2
-            4, 33.0, //L3
-            5, 39.0 //L4 
-            );
+            0, 2.0, // lowest point, will be used for ground intake
+            1, 15.0, // L1
+            2, 10.5, // L2
+            3, 17.0, // L3
+            4, 38.6 // L4
+    );
     private int currentPositionKey = 0;
 
     public ElevatorSubsystem() {
@@ -65,30 +61,35 @@ private PIDController pid;
         pid.setP(kP_DOWN);
         currentPositionKey = targetPositions.keySet().stream().min(Integer::compareTo).orElse(currentPositionKey);
     }
-    public void elevatorLevelGround() {
+
+    public void elevatorPlayerStation() {
         autoMode = true;
         pid.setP(kP_DOWN);
-        currentPositionKey = 0;
+        currentPositionKey = 2;
     }
-    public void elevatorLevelStation() {
-        autoMode = true;
-        pid.setP(kP_DOWN);
-        currentPositionKey = 1;
-    }
-    public void Level4(){
-        autoMode = true;
-        pid.setP(kP_DOWN);
-        currentPositionKey = 5;
-    }
-    public void Level3(){
+
+    public void Level4() {
         autoMode = true;
         pid.setP(kP_DOWN);
         currentPositionKey = 4;
     }
-    public void Level2(){
+
+    public void Level3() {
         autoMode = true;
         pid.setP(kP_DOWN);
         currentPositionKey = 3;
+    }
+
+    public void Level2() {
+        autoMode = true;
+        pid.setP(kP_DOWN);
+        currentPositionKey = 2;
+    }
+
+    public void Level1() {
+        autoMode = true;
+        pid.setP(kP_DOWN);
+        currentPositionKey = 1;
     }
 
     public void elevatorUpAuto() {
@@ -116,8 +117,8 @@ private PIDController pid;
     }
 
     public void stopMotor() {
-        elevatorMotor1.setControl(new DutyCycleOut(.018)); //.03?
-        elevatorMotor2.setControl(new DutyCycleOut(.018));
+        elevatorMotor1.setControl(new DutyCycleOut(.022)); // .03?
+        elevatorMotor2.setControl(new DutyCycleOut(.022));
     }
 
     @Override
@@ -138,6 +139,6 @@ private PIDController pid;
         // System.out.println(
         // "Encoder Position2 : " + currentPosition2 + " | Target: " +
         // targetPositions.get(currentPositionKey));
-    
+
     }
 }

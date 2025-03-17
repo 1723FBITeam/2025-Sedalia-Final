@@ -13,15 +13,15 @@ import frc.robot.Constants;
 
 public class ShoulderSubsystem extends SubsystemBase {
     private final SparkMax shoulderMotor = new SparkMax(Constants.ArmPorts.ShoulderMotor, MotorType.kBrushless);
-    private static final double MOTOR_POWER = -.5;
-    private static final double MOTOR_POWER_HOLD = -.04;
+    private static final double MOTOR_POWER = -.35;
+    private static final double MOTOR_POWER_HOLD = -.025;
     private boolean moving = false;
 
     private SlewRateLimiter rateLimiter = new SlewRateLimiter(3);
 
     // PID Constants
-    private static final double kP_UP = 0.05;
-    private static final double kP_DOWN = 0.05;
+    private static final double kP_UP = 0.04;
+    private static final double kP_DOWN = 0.04;
     private static final double kI = 0.0;
     private static final double kD = 0.0;
 
@@ -29,9 +29,11 @@ public class ShoulderSubsystem extends SubsystemBase {
     private boolean autoMode = false;
 
     private Map<Integer, Double> targetPositions = Map.of(
-            -1, 24.5,
+            -2, 26.9, // ground
+            -1, 7.0, // reef
             0, 0.0,
-            1, -7.8);
+            1, -7.8 // players station
+            );
 
     private int currentPositionKey = 0;
 
@@ -74,6 +76,11 @@ public class ShoulderSubsystem extends SubsystemBase {
                 .orElse(currentPositionKey);
     }
 
+    public void shoulderReefPosition(){
+        autoMode = true;
+        currentPositionKey = -1;
+    }
+
     public void shoulderUp() {
         autoMode = false;
         shoulderMotor.set(MOTOR_POWER);
@@ -110,6 +117,7 @@ public class ShoulderSubsystem extends SubsystemBase {
         }
 
         SmartDashboard.putNumber("Shoulder ", currentPosition);
-        // System.out.println("Shoulder: " + currentPosition + " | Target: " + targetPositions.get(currentPositionKey));
+        // System.out.println("Shoulder: " + currentPosition + " | Target: " +
+        // targetPositions.get(currentPositionKey));
     }
 }

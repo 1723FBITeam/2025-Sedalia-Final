@@ -12,6 +12,7 @@ public class HandSubsystem extends SubsystemBase {
     private final SparkFlex coralMoter = new SparkFlex(Constants.ArmPorts.CoralMotor, MotorType.kBrushless);
 
     private static final double MOTOR_POWER = .5; 
+    private static final double MOTOR_POWER_HOLD = .06; 
 
     public HandSubsystem() {
 
@@ -25,8 +26,8 @@ public class HandSubsystem extends SubsystemBase {
     }
 
     public void stopMotor() {
-        coralMoter.stopMotor();
-        algaeMotor.stopMotor();
+        coralMoter.set(MOTOR_POWER_HOLD);
+        algaeMotor.set(MOTOR_POWER_HOLD);
     }
 
 }
