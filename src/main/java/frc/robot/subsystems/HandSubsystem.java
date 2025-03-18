@@ -26,8 +26,8 @@ public class HandSubsystem extends SubsystemBase {
         coralMoter.set(MOTOR_POWER);
     }
     public void outputAlgaeBarge() {
-        algaeMotor.set(-MOTOR_POWER*2);
-        coralMoter.set(MOTOR_POWER*2);
+        algaeMotor.set(-MOTOR_POWER*2.5);
+        coralMoter.set(MOTOR_POWER*2.5);
     }
     public void stopMotor() {
         algaeMotor.set(0.08);

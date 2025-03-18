@@ -94,7 +94,8 @@ public class RobotContainer {
                 NamedCommands.registerCommand("OutputAlgae", Commands.run(() -> {
                         handSubsystem.outputAlgaeBarge();
                 }, handSubsystem));
-                NamedCommands.registerCommand("AlgaeDown", Commands.run(() -> {
+                NamedCommands.registerCommand("AlgaeDownTest", Commands.runOnce(() -> {
+                        shoulderSubsystem.shoulderForward();
                         elevatorSubsystem.elevatorLevel1();
                 }, elevatorSubsystem, shoulderSubsystem));
                 new EventTrigger("setLevel1Algae").onTrue(Commands.runOnce(() -> {
@@ -191,12 +192,18 @@ public class RobotContainer {
                 // -joystick.getLeftX()))
                 // ));
 
-                // joystick.pov(0).whileTrue(drivetrain.applyRequest(() ->
-                // forwardStraight.withVelocityX(0.5).withVelocityY(0))
-                // );
-                // joystick.pov(180).whileTrue(drivetrain.applyRequest(() ->
-                // forwardStraight.withVelocityX(-0.5).withVelocityY(0))
-                // );
+                m_driverController.pov(0).whileTrue(drivetrain.applyRequest(() ->
+                forwardStraight.withVelocityX(0.5).withVelocityY(0))
+                );
+                m_driverController.pov(180).whileTrue(drivetrain.applyRequest(() ->
+                forwardStraight.withVelocityX(-0.5).withVelocityY(0))
+                );
+                m_driverController.pov(90).whileTrue(drivetrain.applyRequest(() ->
+                forwardStraight.withVelocityX(0).withVelocityY(-0.5))
+                );
+                m_driverController.pov(270).whileTrue(drivetrain.applyRequest(() ->
+                forwardStraight.withVelocityX(0).withVelocityY(0.5))
+                );
 
                 // Run SysId routines when holding back/start and X/Y.
                 // Note that each routine should be run exactly once in a single log.

@@ -19,19 +19,21 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private SlewRateLimiter rateLimiter = new SlewRateLimiter(3);
     // PID Constants
-    private static final double kP_UP = 0.03; // Proportional gain
-    private static final double kP_DOWN = 0.03; // Proportional gain
+    private static final double kP_UP = 0.025; // Proportional gain
+    private static final double kP_DOWN = 0.025; // Proportional gain
     private static final double kI = 0.0; // Integral gain
     private static final double kD = 0.0; // Derivative gain
+
 
     private PIDController pid;
 
     private boolean autoMode = false;
+
     private Map<Integer, Double> targetPositions = Map.of(
             0, 2.2,
             1, 21.5,
             2, 30.0,
-            3, 38.9);
+            3, 38.7);
     private int currentPositionKey = 0;
 
     public ElevatorSubsystem() {

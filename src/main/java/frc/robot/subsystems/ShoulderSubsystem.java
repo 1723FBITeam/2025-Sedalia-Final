@@ -31,7 +31,7 @@ public class ShoulderSubsystem extends SubsystemBase {
     private Map<Integer, Double> targetPositions = Map.of(
             -1, 24.5,
             0, 0.0,
-            1, -7.8);
+            1, -7.1);
 
     private int currentPositionKey = 0;
 
