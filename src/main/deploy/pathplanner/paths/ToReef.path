@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "PrepPlaceCoralL4",
-      "waypointRelativePos": 0.3333333333333332,
+      "name": "setL4",
+      "waypointRelativePos": 0.7647058823529418,
       "endWaypointRelativePos": null,
       "command": null
     }

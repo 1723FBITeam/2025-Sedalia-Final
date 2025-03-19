@@ -5,9 +5,16 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "race",
           "data": {
-            "pathName": "ToReef"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "ToReef"
+                }
+              }
+            ]
           }
         },
         {
@@ -17,13 +24,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "PrepPlaceCoralL4"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0
+                  "name": "OutputCoral"
                 }
               }
             ]

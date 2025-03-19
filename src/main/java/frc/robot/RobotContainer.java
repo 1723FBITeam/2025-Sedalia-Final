@@ -88,14 +88,12 @@ public class RobotContainer {
 
         public RobotContainer() {
 
-                NamedCommands.registerCommand("PrepPlaceCoralL4", Commands.run(() -> {
-                        shoulderSubsystem.shoulderReefPosition();
-                        elevatorSubsystem.elevatorTop();
-                }, shoulderSubsystem, elevatorSubsystem));
+                
                 NamedCommands.registerCommand("CoralDown", Commands.run(()->{
                         shoulderSubsystem.shoulderUp();
                         elevatorSubsystem.elevatorBottom();
-                }, shoulderSubsystem,elevatorSubsystem));
+                        wristSubsystem.wristHorizontal();
+                }, shoulderSubsystem,elevatorSubsystem, wristSubsystem));
                 NamedCommands.registerCommand("IntakeCoral", Commands.run(()->{
                         handSubsystem.intakeCoral();
                 }, handSubsystem));
@@ -105,10 +103,15 @@ public class RobotContainer {
                 NamedCommands.registerCommand("StopCoral", Commands.run(()->{
                         handSubsystem.stopMotor();
                 }, handSubsystem));
-                new EventTrigger("setPlayerStaion").onTrue(Commands.runOnce(() -> {
+                new EventTrigger("setPlayerStation").onTrue(Commands.runOnce(() -> {
                         elevatorSubsystem.elevatorPlayerStation();
                         shoulderSubsystem.shoulderBackward();
                 }, elevatorSubsystem, shoulderSubsystem));
+                new EventTrigger("setL4").onTrue(Commands.runOnce(() -> {
+                        shoulderSubsystem.shoulderReefPosition();
+                        elevatorSubsystem.elevatorTop();
+                        wristSubsystem.wristVertical();
+                }, shoulderSubsystem, elevatorSubsystem, wristSubsystem));
                 
 
                 autoChooser = AutoBuilder.buildAutoChooser("Tests");
