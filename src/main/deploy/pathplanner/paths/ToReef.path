@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.836686643835617,
-        "y": 4.062564212328767
+        "x": 6.58125,
+        "y": 4.002461472602739
       },
       "isLocked": false,
       "linkedName": null
@@ -20,18 +20,25 @@
         "y": 4.002461472602739
       },
       "prevControl": {
-        "x": 6.8216609589041095,
-        "y": 4.062564212328767
+        "x": 6.806635273972603,
+        "y": 3.972410102739726
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Coral2Station"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "PrepPlaceCoralL4",
+      "waypointRelativePos": 0.3333333333333332,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
