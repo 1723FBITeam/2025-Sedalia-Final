@@ -32,7 +32,8 @@ public class ShoulderSubsystem extends SubsystemBase {
             -2, 27.0, // ground
             -1, 7.0, // reef
             0, 0.0,
-            1, -16.5 // players station
+            1, -16.5, // players station
+            2, 15.0 // plop on reef
             );
 
     private int currentPositionKey = 0;
@@ -81,6 +82,11 @@ public class ShoulderSubsystem extends SubsystemBase {
         currentPositionKey = -1;
     }
 
+    public void shoulderPloop(){
+        autoMode = true;
+        currentPositionKey = 2;
+    }
+    
     public void shoulderUp() {
         autoMode = false;
         shoulderMotor.set(MOTOR_POWER);

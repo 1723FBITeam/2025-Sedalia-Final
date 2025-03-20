@@ -6,6 +6,7 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
@@ -103,6 +104,12 @@ public class RobotContainer {
                 NamedCommands.registerCommand("StopCoral", Commands.run(()->{
                         handSubsystem.stopMotor();
                 }, handSubsystem));
+                NamedCommands.registerCommand("PloopCoral", Commands.run(()->{
+                        shoulderSubsystem.shoulderPloop();
+                }, shoulderSubsystem));
+                // new EventTrigger("PlaceCoral").onTrue(Commands.runOnce(() -> {
+                //         shoulderSubsystem.shoulderPloop();
+                // }, shoulderSubsystem));
                 new EventTrigger("setPlayerStation").onTrue(Commands.runOnce(() -> {
                         elevatorSubsystem.elevatorPlayerStation();
                         shoulderSubsystem.shoulderBackward();
@@ -168,6 +175,8 @@ public class RobotContainer {
                                                                 .calculate(-joystick.getLeftX() * 0.7 * MaxSpeed))
                                                 .withRotationalRate(rotationLimiter.calculate(
                                                                 -joystick.getRightX() * 0.85 * MaxAngularRate))));
+
+                drivetrain.addVisionMeasurement(LimelightHelpers.getBotPose2d(null), Utils.getCurrentTimeSeconds() );
 
                 // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
                 // joystick.b().whileTrue(drivetrain.applyRequest(() ->
