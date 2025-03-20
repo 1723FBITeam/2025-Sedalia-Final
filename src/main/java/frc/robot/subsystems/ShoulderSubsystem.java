@@ -79,6 +79,11 @@ public class ShoulderSubsystem extends SubsystemBase {
         shoulderMotor.set(MOTOR_POWER);
         moving = true;
     }
+    public void shoulderReset() {
+        autoMode = true;
+        pid.setP(kP_DOWN);
+        currentPositionKey = 0;
+    }
 
     public void shoulderDown() {
         autoMode = false;

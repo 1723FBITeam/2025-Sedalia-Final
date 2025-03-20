@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.9750822368421055,
-        "y": 4.101973684210526
+        "x": 4.955180921052631,
+        "y": 5.4875
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.432441870944484,
-        "y": 4.134133922134102
+        "x": 6.41254055515501,
+        "y": 5.519660237923576
       },
       "isLocked": false,
       "linkedName": "AtReefAlgae2"
     },
     {
       "anchor": {
-        "x": 7.447203947368421,
-        "y": 6.093667763157895
+        "x": 7.542893835616439,
+        "y": 6.106057363013699
       },
       "prevControl": {
-        "x": 6.754440789473684,
-        "y": 5.574095394736842
+        "x": 6.850130677721702,
+        "y": 5.586484994592646
       },
       "nextControl": null,
       "isLocked": false,
@@ -55,7 +55,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 179.16968451374197
+    "rotation": -118.7059525434011
   },
   "useDefaultConstraints": true
 }

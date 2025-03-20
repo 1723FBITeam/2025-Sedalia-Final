@@ -27,7 +27,7 @@ public class ClimberSubsystem extends SubsystemBase {
         climberMotor2.set(MOTOR_POWER);
     }
 
-    public void stopMotor() {
+    public void climberStop() {
         climberMotor1.set(0.0);
         climberMotor2.set(0.0);
     }

@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.851712328767124,
-        "y": 4.152718321917808
+        "x": 6.86673801369863,
+        "y": 4.137692636986301
       },
       "isLocked": false,
       "linkedName": "StartingMiddleAlgae"
@@ -20,8 +20,8 @@
         "y": 4.152718321917808
       },
       "prevControl": {
-        "x": 6.82166095890411,
-        "y": 4.152718321917808
+        "x": 6.986943493150685,
+        "y": 4.077589897260274
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,14 +31,7 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "setLevel1Algae",
-      "waypointRelativePos": 0.45,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 2.6,
     "maxAcceleration": 2.6,

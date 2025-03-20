@@ -98,6 +98,16 @@ public class RobotContainer {
                         shoulderSubsystem.shoulderForward();
                         elevatorSubsystem.elevatorLevel1();
                 }, elevatorSubsystem, shoulderSubsystem));
+                NamedCommands.registerCommand("ClimberOut", Commands.runOnce(() -> {
+                        climberSubsystem.climberDown();
+                },  climberSubsystem));
+                NamedCommands.registerCommand("ClimberStop", Commands.runOnce(() -> {
+                        climberSubsystem.climberStop();
+                },  climberSubsystem));
+                new EventTrigger("AlgaeFinish").onTrue(Commands.runOnce(() -> {
+                        elevatorSubsystem.elevatorBottom();
+                        shoulderSubsystem.shoulderReset();
+                }, elevatorSubsystem, shoulderSubsystem));
                 new EventTrigger("setLevel1Algae").onTrue(Commands.runOnce(() -> {
                         elevatorSubsystem.elevatorLevel1();
                         shoulderSubsystem.shoulderForward();
@@ -259,12 +269,12 @@ public class RobotContainer {
 
                 m_commanderController.start().whileTrue(new StartEndCommand(
                                 climberSubsystem::climberUp,
-                                climberSubsystem::stopMotor,
+                                climberSubsystem::climberStop,
                                 climberSubsystem));
 
                 m_commanderController.back().whileTrue(new StartEndCommand(
                                 climberSubsystem::climberDown,
-                                climberSubsystem::stopMotor,
+                                climberSubsystem::climberStop,
                                 climberSubsystem));
 
                 m_commanderController.y().whileTrue(new StartEndCommand(

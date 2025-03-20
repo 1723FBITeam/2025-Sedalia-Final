@@ -9,6 +9,31 @@
           "data": {
             "commands": [
               {
+                "type": "named",
+                "data": {
+                  "name": "ClimberOut"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.15
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ClimberStop"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
                 "type": "path",
                 "data": {
                   "pathName": "ToReef"
@@ -178,6 +203,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AlgaeFinish"
           }
         }
       ]
