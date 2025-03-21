@@ -5,7 +5,9 @@
 package frc.robot;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -15,7 +17,7 @@ public class Robot extends TimedRobot {
   private final RobotContainer m_robotContainer;
 
   private final boolean kUseLimelight = false;
-
+  DigitalInput climberSwitch = new DigitalInput(9);
   public Robot() {
     m_robotContainer = new RobotContainer();
   }
@@ -43,6 +45,12 @@ public class Robot extends TimedRobot {
     //     m_robotContainer.drivetrain.addVisionMeasurement(llMeasurement.pose, llMeasurement.timestampSeconds);
     //   }
     //}
+    SmartDashboard.putBoolean("ClimberSwitch", !climberSwitch.get());
+    if (climberSwitch.get()){
+      m_robotContainer.rumble();
+    } else {
+      m_robotContainer.stopRumble();
+    }
   }
 
   @Override

@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.542893835616439,
-        "y": 6.106057363013699
+        "x": 5.917351973684211,
+        "y": 4.152718321917808
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.398568177721702,
-        "y": 5.172751441961068
+        "x": 7.3747116077865895,
+        "y": 4.184878559841384
       },
       "isLocked": false,
-      "linkedName": "AtBargeAlgae"
+      "linkedName": "AtReefAlgae1"
     },
     {
       "anchor": {
-        "x": 4.955180921052631,
-        "y": 5.4875
+        "x": 7.542893835616439,
+        "y": 6.106057363013699
       },
       "prevControl": {
-        "x": 5.892968186733957,
-        "y": 5.500416816870945
+        "x": 6.850130677721702,
+        "y": 5.586484994592646
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "AtReefAlgae2"
+      "linkedName": "AtBargeAlgae"
     }
   ],
   "rotationTargets": [],
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "setLevel2Algae",
-      "waypointRelativePos": 0.21459854014598673,
+      "name": "BargeScore",
+      "waypointRelativePos": 0.6846715328467147,
       "endWaypointRelativePos": null,
       "command": null
     }
@@ -49,13 +49,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -118.7059525434011
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 179.16968451374197
   },
   "useDefaultConstraints": true
 }

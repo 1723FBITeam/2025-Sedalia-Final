@@ -27,6 +27,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.subsystems.WristSubsystem;
@@ -332,7 +333,14 @@ public class RobotContainer {
                                 },
                                 elevatorSubsystem));
         }
-
+        public void rumble(){
+                m_driverController.setRumble(RumbleType.kBothRumble, 1.0);
+                m_commanderController.setRumble(RumbleType.kBothRumble, 1.0);
+        }
+        public void stopRumble(){
+                m_driverController.setRumble(RumbleType.kBothRumble, 0.0);
+                m_commanderController.setRumble(RumbleType.kBothRumble, 0.0);
+        }
         public Command getAutonomousCommand() {
                 /* Run the path selected from the auto chooser */
                 return autoChooser.getSelected();
