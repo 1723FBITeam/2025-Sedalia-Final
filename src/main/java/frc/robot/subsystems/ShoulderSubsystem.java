@@ -30,7 +30,7 @@ public class ShoulderSubsystem extends SubsystemBase {
 
     private Map<Integer, Double> targetPositions = Map.of(
             -2, 24.5,
-            -1,18.0, //processor height
+            -1, 18.0, // processor height
             0, 0.0,
             1, -7.1);
 
@@ -75,15 +75,22 @@ public class ShoulderSubsystem extends SubsystemBase {
                 .orElse(currentPositionKey);
     }
 
+    public void shoulderResetAuto() {
+        autoMode = true;
+        pid.setP(kP_DOWN);
+        currentPositionKey = 0;
+    }
+
+    public void shoulderProcessorAuto() {
+        autoMode = true;
+        pid.setP(kP_DOWN);
+        currentPositionKey = -1;
+    }
+
     public void shoulderUp() {
         autoMode = false;
         shoulderMotor.set(MOTOR_POWER);
         moving = true;
-    }
-    public void shoulderReset() {
-        autoMode = true;
-        pid.setP(kP_DOWN);
-        currentPositionKey = 0;
     }
 
     public void shoulderDown() {
@@ -116,6 +123,7 @@ public class ShoulderSubsystem extends SubsystemBase {
         }
 
         SmartDashboard.putNumber("Shoulder ", currentPosition);
-        // System.out.println("Shoulder: " + currentPosition + " | Target: " + targetPositions.get(currentPositionKey));
+        // System.out.println("Shoulder: " + currentPosition + " | Target: " +
+        // targetPositions.get(currentPositionKey));
     }
 }

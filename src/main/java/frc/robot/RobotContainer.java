@@ -101,13 +101,13 @@ public class RobotContainer {
                 }, elevatorSubsystem, shoulderSubsystem));
                 NamedCommands.registerCommand("ClimberOut", Commands.runOnce(() -> {
                         climberSubsystem.climberDown();
-                },  climberSubsystem));
+                }, climberSubsystem));
                 NamedCommands.registerCommand("ClimberStop", Commands.runOnce(() -> {
                         climberSubsystem.climberStop();
-                },  climberSubsystem));
+                }, climberSubsystem));
                 new EventTrigger("AlgaeFinish").onTrue(Commands.runOnce(() -> {
                         elevatorSubsystem.elevatorBottom();
-                        shoulderSubsystem.shoulderReset();
+                        shoulderSubsystem.shoulderResetAuto();
                 }, elevatorSubsystem, shoulderSubsystem));
                 new EventTrigger("setLevel1Algae").onTrue(Commands.runOnce(() -> {
                         elevatorSubsystem.elevatorLevel1();
@@ -120,11 +120,7 @@ public class RobotContainer {
                 new EventTrigger("BargeScore").onTrue(Commands.runOnce(() -> {
                         elevatorSubsystem.elevatorTop();
                         shoulderSubsystem.shoulderBackward();
-                }, elevatorSubsystem, shoulderSubsystem ));
-
-
-
-
+                }, elevatorSubsystem, shoulderSubsystem));
 
                 autoChooser = AutoBuilder.buildAutoChooser("Tests");
                 SmartDashboard.putData("Auto Mode", autoChooser);
@@ -203,18 +199,14 @@ public class RobotContainer {
                 // -joystick.getLeftX()))
                 // ));
 
-                m_driverController.pov(0).whileTrue(drivetrain.applyRequest(() ->
-                forwardStraight.withVelocityX(0.5).withVelocityY(0))
-                );
-                m_driverController.pov(180).whileTrue(drivetrain.applyRequest(() ->
-                forwardStraight.withVelocityX(-0.5).withVelocityY(0))
-                );
-                m_driverController.pov(90).whileTrue(drivetrain.applyRequest(() ->
-                forwardStraight.withVelocityX(0).withVelocityY(-0.5))
-                );
-                m_driverController.pov(270).whileTrue(drivetrain.applyRequest(() ->
-                forwardStraight.withVelocityX(0).withVelocityY(0.5))
-                );
+                m_driverController.pov(0).whileTrue(
+                                drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)));
+                m_driverController.pov(180).whileTrue(
+                                drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
+                m_driverController.pov(90).whileTrue(
+                                drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0).withVelocityY(-0.5)));
+                m_driverController.pov(270).whileTrue(
+                                drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0).withVelocityY(0.5)));
 
                 // Run SysId routines when holding back/start and X/Y.
                 // Note that each routine should be run exactly once in a single log.
@@ -268,6 +260,20 @@ public class RobotContainer {
                                 elevatorSubsystem::stopMotor,
                                 elevatorSubsystem));
 
+                m_commanderController.pov(0).whileTrue(new StartEndCommand(
+                                () -> {
+                                        elevatorSubsystem.elevatorBottom();
+                                        shoulderSubsystem.shoulderResetAuto();
+                                },
+                                handSubsystem::stopMotor,
+                                handSubsystem, shoulderSubsystem, elevatorSubsystem));
+                m_commanderController.pov(180).whileTrue(new StartEndCommand(
+                                () -> {
+                                        elevatorSubsystem.elevatorBottom();
+                                        shoulderSubsystem.shoulderProcessorAuto();
+                                },
+                                handSubsystem::stopMotor,
+                                handSubsystem, shoulderSubsystem, elevatorSubsystem));
                 m_commanderController.start().whileTrue(new StartEndCommand(
                                 climberSubsystem::climberUp,
                                 climberSubsystem::climberStop,
@@ -333,14 +339,17 @@ public class RobotContainer {
                                 },
                                 elevatorSubsystem));
         }
-        public void rumble(){
+
+        public void rumble() {
                 m_driverController.setRumble(RumbleType.kBothRumble, 1.0);
                 m_commanderController.setRumble(RumbleType.kBothRumble, 1.0);
         }
-        public void stopRumble(){
+
+        public void stopRumble() {
                 m_driverController.setRumble(RumbleType.kBothRumble, 0.0);
                 m_commanderController.setRumble(RumbleType.kBothRumble, 0.0);
         }
+
         public Command getAutonomousCommand() {
                 /* Run the path selected from the auto chooser */
                 return autoChooser.getSelected();
