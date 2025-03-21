@@ -72,10 +72,9 @@ public class RobotContainer {
         private final GenericEntry xButtonEntry = driverTab.add("X Button Pressed", false).getEntry();
         private final GenericEntry yButtonEntry = driverTab.add("Y Button Pressed", false).getEntry();
 
-        private final ShoulderSubsystem shoulderSubsystem = new ShoulderSubsystem();
         private final HandSubsystem handSubsystem = new HandSubsystem();
-
         private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+        ShoulderSubsystem shoulderSubsystem = new ShoulderSubsystem(elevatorSubsystem);
         private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 
         private final SlewRateLimiter xLimiter = new SlewRateLimiter(3.0);

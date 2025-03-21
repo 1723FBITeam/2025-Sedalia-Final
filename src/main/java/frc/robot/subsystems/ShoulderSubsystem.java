@@ -16,6 +16,7 @@ public class ShoulderSubsystem extends SubsystemBase {
     private static final double MOTOR_POWER = -.5;
     private static final double MOTOR_POWER_HOLD = -.04;
     private boolean moving = false;
+    private ElevatorSubsystem elevatorSubsystem;
 
     private SlewRateLimiter rateLimiter = new SlewRateLimiter(3);
 
@@ -36,7 +37,8 @@ public class ShoulderSubsystem extends SubsystemBase {
 
     private int currentPositionKey = 0;
 
-    public ShoulderSubsystem() {
+    public ShoulderSubsystem(ElevatorSubsystem elevatorSubsystem) {
+        this.elevatorSubsystem = elevatorSubsystem;
         pid = new PIDController(kP_UP, kI, kD);
         shoulderMotor.getEncoder().setPosition(0);
     }
