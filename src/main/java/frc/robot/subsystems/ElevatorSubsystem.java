@@ -31,8 +31,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private Map<Integer, Double> targetPositions = Map.of(
             0, 2.2,
-            1, 22.8,
-            2, 31.5,
+            1, 23.4,
+            2, 31.9,
             3, 38.7);
     private int currentPositionKey = 0;
 

@@ -116,6 +116,12 @@
               }
             ]
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AlgaeFinishLeft"
+          }
         }
       ]
     }
