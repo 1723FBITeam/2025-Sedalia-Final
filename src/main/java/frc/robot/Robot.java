@@ -27,7 +27,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-
+    m_robotContainer.drivetrain.periodic(); 
     /*
      * This example of adding Limelight is very simple and may not be sufficient for
      * on-field use.
@@ -65,6 +65,7 @@ public class Robot extends TimedRobot {
     if (rumbleTimer.get() >= 3.0) {
       m_robotContainer.stopRumble();
     }
+
   }
 
   @Override
