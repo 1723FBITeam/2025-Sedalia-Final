@@ -6,6 +6,7 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -28,6 +30,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -37,6 +40,7 @@ import frc.robot.subsystems.HandSubsystem;
 import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.Constants.ControllerPorts;
+import frc.robot.commands.RotateToAngle;
 // import frc.robot.commands.DropCoralCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -200,11 +204,18 @@ public class RobotContainer {
                                                                 -m_driverController.getRightX() * 0.85
                                                                                 * MaxAngularRate))));
 
-                m_driverController.a().whileTrue(
+                // m_driverController.a().whileTrue(
+                // drivetrain.applyRequest(() -> forwardStraight
+                // .withVelocityX(limelight_range_proportional(12))
+                // .withVelocityY(0.0)
+                // .withRotationalRate(limelight_aim_proportional(12))));
+                m_driverController.a().whileFalse(RotateToAngle.create(drivetrain, drive, 180.0));
+
+                m_driverController.b().whileTrue(
                                 drivetrain.applyRequest(() -> forwardStraight
-                                                .withVelocityX(limelight_range_proportional())
+                                                .withVelocityX(limelight_range_proportional(14))
                                                 .withVelocityY(0.0)
-                                                .withRotationalRate(limelight_aim_proportional())));
+                                                .withRotationalRate(0.0)));
                 // joystick.b().whileTrue(drivetrain.applyRequest(() ->
                 // point.withModuleDirection(new Rotation2d(-joystick.getLeftY(),
                 // -joystick.getLeftX()))
@@ -242,10 +253,10 @@ public class RobotContainer {
                                 handSubsystem::stopMotor,
                                 handSubsystem));
 
-                m_driverController.b().whileTrue(new StartEndCommand(
-                                handSubsystem::outputAlgaeProcessor,
-                                handSubsystem::stopMotor,
-                                handSubsystem));
+                // m_driverController.b().whileTrue(new StartEndCommand(
+                // handSubsystem::outputAlgaeProcessor,
+                // handSubsystem::stopMotor,
+                // handSubsystem));
 
                 m_driverController.y().whileTrue(new StartEndCommand(
                                 handSubsystem::outputAlgaeBarge,
@@ -381,20 +392,21 @@ public class RobotContainer {
         // in this case, we are going to return an angular velocity that is proportional
         // to the
         // "tx" value from the Limelight.
-        double limelight_aim_proportional() {
+        double limelight_aim_proportional(int priorityid) {
+                LimelightHelpers.setPriorityTagID("limelight", priorityid);
                 // kP (constant of proportionality)
                 // this is a hand-tuned number that determines the aggressiveness of our
                 // proportional control loop
                 // if it is too high, the robot will oscillate.
                 // if it is too low, the robot will never reach its target
                 // if the robot never turns in the correct direction, kP should be inverted.
+
                 double kP = .015;
 
                 // tx ranges from (-hfov/2) to (hfov/2) in degrees. If your target is on the
                 // rightmost edge of
                 // your limelight 3 feed, tx should return roughly 31 degrees.
                 double targetingAngularVelocity = LimelightHelpers.getTX("limelight") * kP;
-
 
                 // convert to radians per second for our drive method
                 targetingAngularVelocity *= MaxSpeed;
@@ -410,19 +422,19 @@ public class RobotContainer {
         // different.
         // if your limelight and target are mounted at the same or similar heights, use
         // "ta" (area) for target ranging rather than "ty"
-        double limelight_range_proportional() {
-
-                double kP = 0.3;
-                double targetArea = LimelightHelpers.getTA("limelight");
+        double limelight_range_proportional(int priorityid) {
+                LimelightHelpers.setPriorityTagID("limelight", priorityid);
+                double kP = 0.1;
+                double currentLimelightValue = LimelightHelpers.getTY("limelight");
 
                 // Desired stop distance (e.g., ta >= 0.4 means you're close enough)
-                double targetThreshold = 2.0;
+                double targetGoalTY = 19;
 
-                if (targetArea >= targetThreshold) {
+                if (currentLimelightValue >= targetGoalTY || currentLimelightValue == 0) {
                         return 0.0; // Stop driving forward
                 }
 
-                return targetArea * kP * MaxSpeed;
+                return (currentLimelightValue - targetGoalTY) * .1 * kP * MaxSpeed;
 
         }
 
