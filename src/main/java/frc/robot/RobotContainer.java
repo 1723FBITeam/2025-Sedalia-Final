@@ -41,6 +41,8 @@ import frc.robot.subsystems.ShoulderSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.Constants.ControllerPorts;
 import frc.robot.commands.RotateToAngle;
+import frc.robot.commands.AlignAndMoveToTarget;
+import frc.robot.commands.AlignToTarget;
 // import frc.robot.commands.DropCoralCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -204,18 +206,13 @@ public class RobotContainer {
                                                                 -m_driverController.getRightX() * 0.85
                                                                                 * MaxAngularRate))));
 
-                // m_driverController.a().whileTrue(
-                // drivetrain.applyRequest(() -> forwardStraight
-                // .withVelocityX(limelight_range_proportional(12))
-                // .withVelocityY(0.0)
-                // .withRotationalRate(limelight_aim_proportional(12))));
-                m_driverController.a().whileFalse(RotateToAngle.create(drivetrain, drive, 180.0));
+                // A button: Align and move to AprilTag ID 14 (target area = 5.0%, stops at 9.0%)
+                m_driverController.a().whileTrue(
+                        new AlignAndMoveToTarget(drivetrain, "limelight", 14, 5.0, MaxSpeed));
 
+                // B button: Just align to AprilTag ID 14 without moving forward
                 m_driverController.b().whileTrue(
-                                drivetrain.applyRequest(() -> forwardStraight
-                                                .withVelocityX(limelight_range_proportional(14))
-                                                .withVelocityY(0.0)
-                                                .withRotationalRate(0.0)));
+                        new AlignToTarget(drivetrain, "limelight", 14, MaxAngularRate));
                 // joystick.b().whileTrue(drivetrain.applyRequest(() ->
                 // point.withModuleDirection(new Rotation2d(-joystick.getLeftY(),
                 // -joystick.getLeftX()))
