@@ -20,6 +20,13 @@ public final class Constants {
     public static final int Driver = 0;
     public static final int Commander = 1;
   }
+  
+  public static class FieldConstants {
+    public static final double FIELD_LENGTH_METERS = 16.54;
+    public static final double FIELD_WIDTH_METERS = 8.21;
+    public static final double FIELD_CENTER_X = FIELD_LENGTH_METERS / 2.0;
+    public static final double FIELD_CENTER_Y = FIELD_WIDTH_METERS / 2.0;
+  }
   public static class ArmPorts {
     public static final int WristMotor = 16;
     public static final int ShoulderMotor = 17;

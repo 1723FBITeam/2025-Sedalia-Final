@@ -43,6 +43,9 @@ import frc.robot.Constants.ControllerPorts;
 import frc.robot.commands.RotateToAngle;
 import frc.robot.commands.AlignAndMoveToTarget;
 import frc.robot.commands.AlignToTarget;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 // import frc.robot.commands.DropCoralCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -66,6 +69,9 @@ public class RobotContainer {
         // .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
         private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
                         .withDriveRequestType(DriveRequestType.Velocity);
+        private final SwerveRequest.FieldCentricFacingAngle facingAngle = new SwerveRequest.FieldCentricFacingAngle()
+                        .withDeadband(MaxSpeed * 0.1)
+                        .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
         private final Telemetry logger = new Telemetry(MaxSpeed);
 
@@ -210,9 +216,29 @@ public class RobotContainer {
                 m_driverController.a().whileTrue(
                         new AlignAndMoveToTarget(drivetrain, "limelight", 14, 5.0, MaxSpeed));
 
-                // B button: Just align to AprilTag ID 14 without moving forward
-                m_driverController.b().whileTrue(
-                        new AlignToTarget(drivetrain, "limelight", 14, MaxAngularRate));
+                // B button: Lock rotation to face the center of the field while allowing driver movement
+                m_driverController.b().whileTrue(drivetrain.applyRequest(() -> {
+                        var pose = drivetrain.getState().Pose;
+                        var toCenter = new Translation2d(
+                                Constants.FieldConstants.FIELD_CENTER_X - pose.getX(),
+                                Constants.FieldConstants.FIELD_CENTER_Y - pose.getY()
+                        );
+                        
+                        double desiredAngle = Math.atan2(toCenter.getY(), toCenter.getX());
+                        double currentAngle = pose.getRotation().getRadians();
+                        
+                        double angleError = desiredAngle - currentAngle;
+                        while (angleError > Math.PI) angleError -= 2 * Math.PI;
+                        while (angleError < -Math.PI) angleError += 2 * Math.PI;
+                        
+                        double rotationRate = Math.toDegrees(angleError) * 0.008 * MaxAngularRate;
+                        rotationRate = Math.max(-0.6 * MaxAngularRate, Math.min(0.6 * MaxAngularRate, rotationRate));
+                        
+                        return drive
+                                .withVelocityX(xLimiter.calculate(-m_driverController.getLeftY() * 0.7 * MaxSpeed))
+                                .withVelocityY(yLimiter.calculate(-m_driverController.getLeftX() * 0.7 * MaxSpeed))
+                                .withRotationalRate(rotationRate);
+                }));
                 // joystick.b().whileTrue(drivetrain.applyRequest(() ->
                 // point.withModuleDirection(new Rotation2d(-joystick.getLeftY(),
                 // -joystick.getLeftX()))
@@ -234,8 +260,13 @@ public class RobotContainer {
                 // joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
                 // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-                // reset the field-centric heading on left bumper press
-                m_driverController.back().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+                // reset pose to center line, 2 meters to the driver's left
+                m_driverController.back().onTrue(drivetrain.runOnce(() -> {
+                        // Center line X = 8.27m (middle of field length)
+                        // 2 meters to the left from driver perspective = Y + 2.0
+                        double yPosition = Constants.FieldConstants.FIELD_CENTER_Y + 2.0; // 6.105m
+                        drivetrain.resetPose(new Pose2d(Constants.FieldConstants.FIELD_CENTER_X, yPosition, Rotation2d.fromDegrees(0)));
+                }));
 
                 drivetrain.registerTelemetry(logger::telemeterize);
 
